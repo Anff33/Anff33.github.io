@@ -11,6 +11,7 @@
 
   
   <title>
+    FK RCE |
     
     (&gt;ᯅ&lt;)
   </title>
@@ -22,24 +23,35 @@
 
   <link rel="preload" href="https://npm.webcache.cn/@fortawesome/fontawesome-free@6.5.1/css/brands.min.css" as="style" onload="this.onload&#x3D;null;this.rel&#x3D;&#39;stylesheet&#39;"><link rel="preload" href="https://npm.webcache.cn/@fortawesome/fontawesome-free@6.5.1/css/v5-font-face.min.css" as="style" onload="this.onload&#x3D;null;this.rel&#x3D;&#39;stylesheet&#39;"><link rel="preload" href="https://npm.webcache.cn/@fortawesome/fontawesome-free@6.5.1/css/v4-font-face.min.css" as="style" onload="this.onload&#x3D;null;this.rel&#x3D;&#39;stylesheet&#39;">
   
-<link rel="stylesheet" href="css/loader.css">
+<link rel="stylesheet" href="../../../../css/loader.css">
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="(&gt;ᯅ&lt;)">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="根据提示try &#x2F;?text &#x3D; 123  发现他是根据你输入的text来回显的内容   ? 发现过滤了大量sql注入的语法，猜想是sql注入 陆续尝试了堆注、盲注、报错注入都不行 md，sqlmap -level5都爆不出来 ？ 开始思考是不是方向有问题，用户输入的text经尝试可以输入很长，一个数据库怎么可能有这么“周到”呢 猜想估计是后端收到text然后用一个脚本将其转义">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FK RCE">
+<meta property="og:url" content="http://example.com/2024/04/11/FK%20RCE/index.html">
 <meta property="og:site_name" content="(&gt;ᯅ&lt;)">
+<meta property="og:description" content="根据提示try &#x2F;?text &#x3D; 123  发现他是根据你输入的text来回显的内容   ? 发现过滤了大量sql注入的语法，猜想是sql注入 陆续尝试了堆注、盲注、报错注入都不行 md，sqlmap -level5都爆不出来 ？ 开始思考是不是方向有问题，用户输入的text经尝试可以输入很长，一个数据库怎么可能有这么“周到”呢 猜想估计是后端收到text然后用一个脚本将其转义">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2024/04/11/FK%20RCE/Untitled.png">
+<meta property="og:image" content="http://example.com/2024/04/11/FK%20RCE/Untitled%201.png">
+<meta property="og:image" content="http://example.com/2024/04/11/FK%20RCE/Untitled%202.png">
+<meta property="og:image" content="http://example.com/2024/04/11/FK%20RCE/Untitled%203.png">
+<meta property="og:image" content="http://example.com/2024/04/11/FK%20RCE/Untitled%204.png">
+<meta property="og:image" content="http://example.com/2024/04/11/FK%20RCE/Untitled%205.png">
+<meta property="article:published_time" content="2024-04-11T05:32:18.210Z">
+<meta property="article:modified_time" content="2024-04-11T05:40:16.402Z">
 <meta property="article:author" content="阿尼亚はこれが好き">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/04/11/FK%20RCE/Untitled.png">
   
-    <link rel="alternate" href="atom.xml" title="(>ᯅ<)" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="alternate" href="../../../../atom.xml" title="(>ᯅ<)" type="application/atom+xml">
   
   
+    <link rel="shortcut icon" href="../../../../images/favicon.ico">
   
-<link rel="stylesheet" href="css/style.css">
+  
+  
+<link rel="stylesheet" href="../../../../css/style.css">
 
   
     
@@ -122,29 +134,29 @@
     
       <span class="main-nav-link-wrap">
         <span class="main-nav-icon"></span>
-        <a class="main-nav-link" href="index.html">Home</a>
+        <a class="main-nav-link" href="../../../../index.html">Home</a>
       </span>
     
       <span class="main-nav-link-wrap">
         <span class="main-nav-icon"></span>
-        <a class="main-nav-link" href="/archives">Archives</a>
+        <a class="main-nav-link" href="../../../../archives">Archives</a>
       </span>
     
       <span class="main-nav-link-wrap">
         <span class="main-nav-icon"></span>
-        <a class="main-nav-link" href="/about">About</a>
+        <a class="main-nav-link" href="../../../../about">About</a>
       </span>
     
       <span class="main-nav-link-wrap">
         <span class="main-nav-icon"></span>
-        <a class="main-nav-link" href="/friend">Friend</a>
+        <a class="main-nav-link" href="../../../../friend">Friend</a>
       </span>
     
     <a id="main-nav-toggle" class="nav-icon"></a>
   </nav>
   <nav id="sub-nav">
     
-      <a id="nav-rss-link" class="nav-icon" href="atom.xml" title="RSS Feed"></a>
+      <a id="nav-rss-link" class="nav-icon" href="../../../../atom.xml" title="RSS Feed"></a>
     
     
     
@@ -152,7 +164,7 @@
 </div>
 <header id="header">
   
-    <img fetchpriority="high" src="/images/banner.jpg" alt="">
+    <img fetchpriority="high" src="/images/banner.jpg" alt="FK RCE">
   
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
@@ -160,8 +172,8 @@
         
           
           
-            <a href="index.html" id="logo">
-              <h1>(&gt;ᯅ&lt;)</h1>
+            <a href="../../../../index.html" id="logo">
+              <h1>FK RCE</h1>
             </a>
           
         
@@ -178,157 +190,109 @@
 
         <div id="content" class="outer">
           
-          <section id="main">
-  
-  
-  <div class="post-wrap-left wow fadeInUp">
-    
-      <a class="post-link" href="2024/04/11/FK%20RCE/" aria-label="FK RCE"></a>
-    
-    
-    <div class="post-cover-left">
+          <section id="main"><article id="post-FK RCE" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    <div class="article-meta">
+      <div class="article-date wow slideInLeft">
+  <a href="" class="article-date-link">
+    <time datetime="2024-04-11T05:32:18.210Z" itemprop="datePublished">2024-04-11</time>
+  </a>
+</div>
+
       
-        
-        
-          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="FK RCE" class="lazyload">
-        
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>根据提示try &#x2F;?text &#x3D; 123</p>
+<p><img src="Untitled.png"></p>
+<p>发现他是根据你输入的text来回显的内容</p>
+<p><img src="Untitled%201.png"></p>
+<p><img src="Untitled%202.png"></p>
+<p>?</p>
+<p>发现过滤了大量sql注入的语法，猜想是sql注入</p>
+<p>陆续尝试了堆注、盲注、报错注入都不行</p>
+<p>md，sqlmap -level5都爆不出来</p>
+<p>？</p>
+<p>开始思考是不是方向有问题，用户输入的text经尝试可以输入很长，一个数据库怎么可能有这么“周到”呢</p>
+<p>猜想估计是后端收到text然后用一个脚本将其转义成这种逆天的格式</p>
+<p>尝试各种shell命令执行姿势，同时绕过正则</p>
+<p>发现<code>123&#39;</code> 会报错，但是<code>123&#39;&#39;</code> 不会，推测单引号闭合</p>
+<p>构造 <code>123’$(ls)’123</code> </p>
+<p><img src="Untitled%203.png"></p>
+<p>haha</p>
+<p><img src="Untitled%204.png"></p>
+<p>除了直接在浏览器上看之外，这个是出网的可以直接curl到服务器上看</p>
+<p><code>123’$(cat /f*)’123</code></p>
+<p>得到flag</p>
+<p>耶</p>
+<p>反思：</p>
+<p>1，一种方法不通，尝试多种方法打</p>
+<p>2，可以使用脚本来fuzz，hurrison推荐seclists</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/danielmiessler/SecLists">https://github.com/danielmiessler/SecLists</a></p>
+<p><img src="Untitled%205.png"></p>
+<p>3，甚至还加了一行虚构的header来诱使你打express，只是做的时候没发现这个坑</p>
+<p>4，多多学习 CTF 常见的shell命令执行姿势</p>
+
       
     </div>
-    <div class="post-info">
-      <div class="post-meta">
-        <span><span class="icon-calendar"></span>2024-04-11</span>
-        <span><span class="icon-pencil"></span>299 words</span>
-        <span><span class="icon-clock"></span>1 min</span>
-      </div>
-      <h2 class="post-title">FK RCE</h2>
-      <article class="post-article">
-        
-          根据提示try &amp;#x2F;?text &amp;#x3D; 123
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/04/11/FK%20RCE/" data-id="cluutj4qg000344v3eql88mhs" data-title="FK RCE" class="article-share-link">Share</a>
+      
+      
+      
+      
+      
+      
 
-发现他是根据你输入的text来回显的内容
-
-
-?
-发现过滤了大量sql注入的语法，猜想是sql注入
-陆续尝试了堆注、盲注、报错注入都不行
-md，sqlmap -level5都爆不出来
-？
-开始思考是不是方向有问题，用户输入的text经尝试可以输入很长，一个数据库怎么可能有这么“周到”呢
-猜想估计是后端收到text然后用一个脚本将其转义成这种逆天的格式
-尝试各种shell命令执行姿势，同时绕过正则
-发现123&amp;#39; 会报错，但是123&amp;#39;&amp;#39; 不会，推测单引号闭合
-构造 123’$(ls)’123 
-
-haha
-
-除
-        
-      </article>
-    </div>
+    </footer>
   </div>
-
-
   
-  
-  <div class="post-wrap-right wow fadeInUp">
     
-    <a class="post-link" href="2024/04/03/FK%20Penetration/"></a>
+  <nav id="article-nav" class="wow fadeInUp">
     
-    <div class="post-cover-right">
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
       
         
         
           <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="FK Penetration" class="lazyload">
         
       
-    </div>
-    <div class="post-info">
-      <div class="post-meta">
-        <span><span class="icon-calendar"></span>2024-04-03</span>
-        <span><span class="icon-pencil"></span>1.7k words</span>
-        <span><span class="icon-clock"></span>6 mins</span>
-      </div>
-      <h2 class="post-title">FK Penetration</h2>
-      <article class="post-article">
+      <a href="../../03/FK%20Penetration/"></a>
+      <div class="article-nav-caption">Older</div>
+      <h3 class="article-nav-title">
         
-          
-白日依山尽，黄河入海流。欲穷千里目，更上一层楼。
-
-内网逻辑示意图
-
-flag1获得网址
-https://pentest.timlzh.com/
-访问网站
-
-没有任何线索，尝试扫目录
-发现有 robots.txt
-
-进入这个目录
-
-扫目录发现有很多.git的路径
-猜测为.git泄露
-githack可以拿到所有源码
-
-发现public文件夹下面有一个thinkphp，而这个框架存在很多RCE漏洞
-发现版本
-
-thinkphp 5.0.23 漏洞
-尝试POST写入phpinfo
-1_method=__construct&amp;amp;filter[]=system&amp;amp;method=get&amp;amp
+          FK Penetration
         
-      </article>
+      </h3>
     </div>
-  </div>
+    
+  </nav>
 
 
   
-  
-  <div class="post-wrap-left wow fadeInUp">
-    
-      <a class="post-link" href="2024/03/25/hello-world/" aria-label="Hello World"></a>
-    
-    
-    <div class="post-cover-left">
-      
-        
-        
-          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="Hello World" class="lazyload">
-        
-      
-    </div>
-    <div class="post-info">
-      <div class="post-meta">
-        <span><span class="icon-calendar"></span>2024-03-25</span>
-        <span><span class="icon-pencil"></span>640 words</span>
-        <span><span class="icon-clock"></span>2 mins</span>
-      </div>
-      <h2 class="post-title">Hello World</h2>
-      <article class="post-article">
-        
-          
-哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈道爷我成啦
-
-一直想要搭建个人博客很久了，但老是有一种刻板印象觉得搭博客是一件特别耗费精力的事情，所以总是拖着没启动，机缘巧合之下今天刚刚好有时间，想要一个，然后不一会就整出来了（笑），又证明了一遍最大的阻碍就是你对未知的恐惧，像CTF一样，你越过内心的那道坎去正向面对它，其实也就和其他的科目没什么两样，关键在于这个直面的过程
-这个博客主要会记录一些学习的笔记和做题的wp等。。。。。。闹麻了，啥都没学搞得跟真的一样
-感觉现在还是一个高级小白，那就先从搭建的blog记起吧
-参考链接【超级详细的小白教程】Hexo 搭建自己的博客
-利用GitHub Pages
-        
-      </article>
-    </div>
-  </div>
+</article>
 
 
-  
+
 
 
 
 </section>
           
             <aside id="sidebar">
-  <div class="sidebar-wrap wow fadeInRight ">
+  <div class="sidebar-wrap wow fadeInRight wrap-sticky">
     
-      <div class="sidebar-author">
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper"></div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
   <img data-src="/avatar/avatarrr.jpg" data-sizes="auto" alt="阿尼亚はこれが好き" class="lazyload">
   <div class="sidebar-author-name">阿尼亚はこれが好き</div>
   <div class="sidebar-description"></div>
@@ -353,32 +317,37 @@ thinkphp 5.0.23 漏洞
 <div class="sidebar-menu">
   
     <div class="sidebar-menu-link-wrap">
-      <a class="sidebar-menu-link-dummy" href="index.html" aria-label="Home"></a>
+      <a class="sidebar-menu-link-dummy" href="../../../../index.html" aria-label="Home"></a>
       <span class="sidebar-menu-icon"></span>
       <div class="sidebar-menu-link">Home</div>
     </div>
   
     <div class="sidebar-menu-link-wrap">
-      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+      <a class="sidebar-menu-link-dummy" href="../../../../archives" aria-label="Archives"></a>
       <span class="sidebar-menu-icon"></span>
       <div class="sidebar-menu-link">Archives</div>
     </div>
   
     <div class="sidebar-menu-link-wrap">
-      <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+      <a class="sidebar-menu-link-dummy" href="../../../../about" aria-label="About"></a>
       <span class="sidebar-menu-icon"></span>
       <div class="sidebar-menu-link">About</div>
     </div>
   
     <div class="sidebar-menu-link-wrap">
-      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+      <a class="sidebar-menu-link-dummy" href="../../../../friend" aria-label="Friend"></a>
       <span class="sidebar-menu-icon"></span>
       <div class="sidebar-menu-link">Friend</div>
     </div>
   
 </div>
-
+</div>
     
+    
+      <div class="sidebar-btn-wrapper" style="position:static">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
     
   </div>
 
@@ -437,7 +406,12 @@ thinkphp 5.0.23 漏洞
       <nav id="mobile-nav">
   <div class="sidebar-wrap">
     
-      <div class="sidebar-author">
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper"></div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
   <img data-src="/avatar/avatarrr.jpg" data-sizes="auto" alt="阿尼亚はこれが好き" class="lazyload">
   <div class="sidebar-author-name">阿尼亚はこれが好き</div>
   <div class="sidebar-description"></div>
@@ -462,33 +436,38 @@ thinkphp 5.0.23 漏洞
 <div class="sidebar-menu">
   
     <div class="sidebar-menu-link-wrap">
-      <a class="sidebar-menu-link-dummy" href="index.html" aria-label="Home"></a>
+      <a class="sidebar-menu-link-dummy" href="../../../../index.html" aria-label="Home"></a>
       <span class="sidebar-menu-icon"></span>
       <div class="sidebar-menu-link">Home</div>
     </div>
   
     <div class="sidebar-menu-link-wrap">
-      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+      <a class="sidebar-menu-link-dummy" href="../../../../archives" aria-label="Archives"></a>
       <span class="sidebar-menu-icon"></span>
       <div class="sidebar-menu-link">Archives</div>
     </div>
   
     <div class="sidebar-menu-link-wrap">
-      <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+      <a class="sidebar-menu-link-dummy" href="../../../../about" aria-label="About"></a>
       <span class="sidebar-menu-icon"></span>
       <div class="sidebar-menu-link">About</div>
     </div>
   
     <div class="sidebar-menu-link-wrap">
-      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+      <a class="sidebar-menu-link-dummy" href="../../../../friend" aria-label="Friend"></a>
       <span class="sidebar-menu-icon"></span>
       <div class="sidebar-menu-link">Friend</div>
     </div>
   
 </div>
-
+</div>
     
   </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
   
 </nav>
 
@@ -531,7 +510,7 @@ thinkphp 5.0.23 漏洞
 
 
 
-<script src="js/pjax_script.js" data-pjax></script>
+<script src="../../../../js/pjax_script.js" data-pjax></script>
 
 
 
@@ -562,7 +541,7 @@ thinkphp 5.0.23 漏洞
 
 
 
-<script src="js/script.js"></script>
+<script src="../../../../js/script.js"></script>
 
 
 
