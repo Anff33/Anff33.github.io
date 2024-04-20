@@ -1,0 +1,628 @@
+
+  <!DOCTYPE html>
+  <html lang="en"  >
+  <head>
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  
+  <title>
+    从图灵完备开始的数电学习之旅 |
+    
+    (&gt;ᯅ&lt;)
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preload" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap&subset=latin,latin-ext" as="style" onload="this.onload&#x3D;null;this.rel&#x3D;&#39;stylesheet&#39;">
+  
+<link rel="stylesheet" href="https://npm.webcache.cn/@fortawesome/fontawesome-free@6.5.1/css/regular.min.css">
+<link rel="stylesheet" href="https://npm.webcache.cn/@fortawesome/fontawesome-free@6.5.1/css/solid.min.css">
+
+  <link rel="preload" href="https://npm.webcache.cn/@fortawesome/fontawesome-free@6.5.1/css/brands.min.css" as="style" onload="this.onload&#x3D;null;this.rel&#x3D;&#39;stylesheet&#39;"><link rel="preload" href="https://npm.webcache.cn/@fortawesome/fontawesome-free@6.5.1/css/v5-font-face.min.css" as="style" onload="this.onload&#x3D;null;this.rel&#x3D;&#39;stylesheet&#39;"><link rel="preload" href="https://npm.webcache.cn/@fortawesome/fontawesome-free@6.5.1/css/v4-font-face.min.css" as="style" onload="this.onload&#x3D;null;this.rel&#x3D;&#39;stylesheet&#39;">
+  
+<link rel="stylesheet" href="../../../../css/loader.css">
+
+  <meta name="description" content="今天下载了一个新游戏，据说是能从0到1学习计算机基础架构（学校的数电课是一节没上过），之前对计算机架构最深的理解也就是看他们MC里面的红石计算机，故此写一份学习攻略，也算是对数电的一个亡羊补牢 理解图灵完备性图灵完备性，也称为计算普遍性，是一个重要的概念，用于衡量一个系统是否具备执行任何算法的能力。这个概念是以英国数学家和逻辑学家艾伦·图灵的名字命名的，他提出了图灵机的模型，这是一种理想化的设备，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从图灵完备开始的数电学习之旅">
+<meta property="og:url" content="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/index.html">
+<meta property="og:site_name" content="(&gt;ᯅ&lt;)">
+<meta property="og:description" content="今天下载了一个新游戏，据说是能从0到1学习计算机基础架构（学校的数电课是一节没上过），之前对计算机架构最深的理解也就是看他们MC里面的红石计算机，故此写一份学习攻略，也算是对数电的一个亡羊补牢 理解图灵完备性图灵完备性，也称为计算普遍性，是一个重要的概念，用于衡量一个系统是否具备执行任何算法的能力。这个概念是以英国数学家和逻辑学家艾伦·图灵的名字命名的，他提出了图灵机的模型，这是一种理想化的设备，">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/Untitled.png">
+<meta property="og:image" content="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/Untitled%201.png">
+<meta property="og:image" content="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/Untitled%202.png">
+<meta property="og:image" content="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/Untitled%203.png">
+<meta property="og:image" content="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/Untitled%204.png">
+<meta property="og:image" content="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/Untitled%205.png">
+<meta property="og:image" content="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/Untitled%206.png">
+<meta property="og:image" content="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/Untitled%207.png">
+<meta property="og:image" content="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/Untitled%208.png">
+<meta property="og:image" content="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/Untitled%209.png">
+<meta property="og:image" content="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/Untitled%2010.png">
+<meta property="og:image" content="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/Untitled%2011.png">
+<meta property="og:image" content="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/Untitled%2012.png">
+<meta property="og:image" content="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/Untitled%2013.png">
+<meta property="og:image" content="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/Untitled%2014.png">
+<meta property="og:image" content="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/Untitled%2015.png">
+<meta property="og:image" content="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/Untitled%2016.png">
+<meta property="og:image" content="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/Untitled%2017.png">
+<meta property="og:image" content="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/Untitled%2018.png">
+<meta property="og:image" content="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/Untitled%2019.png">
+<meta property="og:image" content="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/Untitled%2020.png">
+<meta property="og:image" content="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/Untitled%2021.png">
+<meta property="og:image" content="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/Untitled%2022.png">
+<meta property="og:image" content="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/Untitled%2023.png">
+<meta property="article:published_time" content="2024-04-20T14:58:23.184Z">
+<meta property="article:modified_time" content="2024-04-20T15:12:13.930Z">
+<meta property="article:author" content="阿尼亚はこれが好き">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/Untitled.png">
+  
+    <link rel="alternate" href="../../../../atom.xml" title="(>ᯅ<)" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="../../../../images/favicon.ico">
+  
+  
+  
+<link rel="stylesheet" href="../../../../css/style.css">
+
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+  
+  
+  
+  
+  
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"></script>
+
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/wowjs@1.1.3/css/libs/animate.css">
+
+    
+<script src="https://npm.webcache.cn/wowjs@1.1.3/dist/wow.min.js"></script>
+
+    <script>
+      new WOW({
+        offset: 0,
+        mobile: true,
+        live: false
+      }).init();
+    </script>
+  
+  
+    <script src="/sw.js"></script>
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+  <body>
+    
+  <div id='loader'>
+    <div class="loading-left-bg"></div>
+    <div class="loading-right-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff6e6b" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z" fill="#fd0d00" />
+          <path d="M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95" fill="#fd0d00" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    const startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    const endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('load', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="../../../../index.html">Home</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="../../../../archives">Archives</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="../../../../about">About</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="../../../../friend">Friend</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="../../../../atom.xml" title="RSS Feed"></a>
+    
+    
+    
+  </nav>
+</div>
+<header id="header">
+  
+    <img fetchpriority="high" src="/images/banner.jpg" alt="从图灵完备开始的数电学习之旅">
+  
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <div id="logo-wrap">
+        
+          
+          
+            <a href="../../../../index.html" id="logo">
+              <h1>从图灵完备开始的数电学习之旅</h1>
+            </a>
+          
+        
+      </div>
+      
+        
+        <h2 id="subtitle-wrap">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content" class="outer">
+          
+          <section id="main"><article id="post-从图灵完备开始的数电学习之旅" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    <div class="article-meta">
+      <div class="article-date wow slideInLeft">
+  <a href="" class="article-date-link">
+    <time datetime="2024-04-20T14:58:23.184Z" itemprop="datePublished">2024-04-20</time>
+  </a>
+</div>
+
+      
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>今天下载了一个新游戏，据说是能从0到1学习计算机基础架构（学校的数电课是一节没上过），之前对计算机架构最深的理解也就是看他们MC里面的红石计算机，故此写一份学习攻略，也算是对数电的一个亡羊补牢</p>
+<h1 id="理解图灵完备性"><a href="#理解图灵完备性" class="headerlink" title="理解图灵完备性"></a>理解图灵完备性</h1><p>图灵完备性，也称为计算普遍性，是一个重要的概念，用于衡量一个系统是否具备执行任何算法的能力。这个概念是以英国数学家和逻辑学家艾伦·图灵的名字命名的，他提出了图灵机的模型，这是一种理想化的设备，能够模拟任何算法的执行过程。</p>
+<p>如果一个计算系统（如编程语言、自动机或计算模型）能够模拟通用图灵机的行为，那么这个系统就被认为是图灵完备的。在实践中，这意味着如果一个系统是图灵完备的，它就能够执行包括复杂算法和数据处理任务在内的任何计算任务。</p>
+<p>图灵完备性通常通过系统是否能实现以下几点来判断：</p>
+<ol>
+<li>数据存储和检索：系统能否存储数据并在需要时检索。</li>
+<li>条件执行：系统能否根据条件判断来选择执行不同的操作。</li>
+<li>可变循环或递归：系统能否执行重复操作，直到满足某个条件。</li>
+</ol>
+<p>例如，所有现代编程语言如Python、Java和C++都是图灵完备的，因为它们可以用来编写实现任何计算功能的程序。同样，某些自动化系统和复杂的硬件结构，如CPU，也显示出图灵完备性。这一特性是现代计算和编程的基础，使得能够设计复杂且功能强大的软件系统和应用程序。</p>
+<h1 id="基础逻辑门"><a href="#基础逻辑门" class="headerlink" title="基础逻辑门"></a>基础逻辑门</h1><h2 id="非门-（NOT）"><a href="#非门-（NOT）" class="headerlink" title="非门 （NOT）"></a>非门 （NOT）</h2><p><img src="Untitled.png"></p>
+<h2 id="与门-（AND）"><a href="#与门-（AND）" class="headerlink" title="与门 （AND）"></a>与门 （AND）</h2><p><img src="Untitled%201.png"></p>
+<h2 id="或门（OR）"><a href="#或门（OR）" class="headerlink" title="或门（OR）"></a>或门（OR）</h2><p><img src="Untitled%202.png"></p>
+<h2 id="或非门（NOR）"><a href="#或非门（NOR）" class="headerlink" title="或非门（NOR）"></a>或非门（NOR）</h2><p>把或门的最后输出端加一个非门就是或非门 （<del>也可以再加三个</del>）</p>
+<p><img src="Untitled%203.png"></p>
+<h2 id="异或门（XOR）"><a href="#异或门（XOR）" class="headerlink" title="异或门（XOR）"></a>异或门（XOR）</h2><p><img src="Untitled%204.png"></p>
+<h2 id="同或门-（XNOR）"><a href="#同或门-（XNOR）" class="headerlink" title="同或门 （XNOR）"></a>同或门 （XNOR）</h2><p>异或加一个非</p>
+<p><img src="Untitled%205.png"></p>
+<h1 id="进阶算数运算"><a href="#进阶算数运算" class="headerlink" title="进阶算数运算"></a>进阶算数运算</h1><h2 id="半加器"><a href="#半加器" class="headerlink" title="半加器"></a>半加器</h2><p><img src="Untitled%206.png"></p>
+<p>利用异或保存1、0的特征，与门计算进位</p>
+<h2 id="全加器"><a href="#全加器" class="headerlink" title="全加器"></a>全加器</h2><p><img src="Untitled%207.png"></p>
+<p>半加器每计算一个信号，就将进位信号与下一位继续半加，小学数学</p>
+<h2 id="1位开关"><a href="#1位开关" class="headerlink" title="1位开关"></a>1位开关</h2><p><img src="Untitled%208.png"></p>
+<h2 id="八位或"><a href="#八位或" class="headerlink" title="八位或"></a>八位或</h2><p><img src="Untitled%209.png"></p>
+<h2 id="八位非"><a href="#八位非" class="headerlink" title="八位非"></a>八位非</h2><p><img src="Untitled%2010.png"></p>
+<p>按位或即可</p>
+<h2 id="八位加法器"><a href="#八位加法器" class="headerlink" title="八位加法器"></a>八位加法器</h2><p><img src="Untitled%2011.png"></p>
+<p>相当于一个全加器，但是输出的进位和信号均传入八位集线器</p>
+<h2 id="数据选择器："><a href="#数据选择器：" class="headerlink" title="数据选择器："></a>数据选择器：</h2><p><img src="Untitled%2012.png"></p>
+<h2 id="一位储存"><a href="#一位储存" class="headerlink" title="一位储存"></a>一位储存</h2><p><img src="Untitled%2013.png"></p>
+<p>启用写入时，回路的开关断开，此时输出信号来自写入信息</p>
+<p>关闭写入时，回路的开关打开同时写入信息开关断开，相当于输出信号不断读取循环在回路中的信号，也就是“储存”</p>
+<h2 id="一字节储存"><a href="#一字节储存" class="headerlink" title="一字节储存"></a>一字节储存</h2><p><img src="Untitled%2014.png"></p>
+<p>按位储存即可</p>
+<h2 id="一位解码器"><a href="#一位解码器" class="headerlink" title="一位解码器"></a>一位解码器</h2><p><img src="Untitled%2015.png"></p>
+<p>正反两个状态</p>
+<h2 id="三位解码器"><a href="#三位解码器" class="headerlink" title="三位解码器"></a>三位解码器</h2><p>经典三八译码器</p>
+<p><img src="Untitled%2016.png"></p>
+<h2 id="小盒子"><a href="#小盒子" class="headerlink" title="小盒子"></a>小盒子</h2><p>利用两个输入信号控制四个寄存器的地址同时其他控制写入和读取</p>
+<p>橙色导线上方的四个与门的输出可以构成一个2-4译码器</p>
+<p><img src="Untitled%2017.png"></p>
+<p>这简直就是master piece！！！</p>
+<h1 id="处理器架构"><a href="#处理器架构" class="headerlink" title="处理器架构"></a>处理器架构</h1><h2 id="计数器"><a href="#计数器" class="headerlink" title="计数器"></a>计数器</h2><p>步进模式下每次值增加一，写入模式直接写入数据</p>
+<p><img src="Untitled%2018.png"></p>
+<p>利用储存器的原理就行</p>
+<h2 id="算数引擎"><a href="#算数引擎" class="headerlink" title="算数引擎"></a>算数引擎</h2><p><img src="Untitled%2019.png"></p>
+<p>没有用到与门，用的 not + or + not 来表示与非</p>
+<p><code>000</code> OR  绿色导线部分直通，经过OR 后直接由粉色导线输出</p>
+<p><code>001</code> NAND 绿色导线打开NOT开关，经过OR 后直接由粉色导线输出</p>
+<p><code>010</code> NOR  绿色导线部分直通，经过OR 后在橙色导线接受一次NOT后输出</p>
+<p><code>011</code> AND  绿色导线打开NOT开关，经过OR 后在橙色导线接受一次NOT后输出</p>
+<p><code>100</code> ADD 上面的主干道SWITCH OFF ，打开下面的加法器开关</p>
+<p><code>101</code> ADD 上面的主干道SWITCH OFF ，打开下面的加法器开关，再打开一个取反的开关</p>
+<h2 id="条件判断"><a href="#条件判断" class="headerlink" title="条件判断"></a>条件判断</h2><p><img src="Untitled%2020.png"></p>
+<p><img src="Untitled%2021.png"></p>
+<p><code>000</code> 打开一号开关直接输出0</p>
+<p><code>001</code> 判断最高位-128和其他七位同时为0时输出0</p>
+<p><code>010</code> 判断最高位是否打开，打开就&lt;0</p>
+<p><code>011</code>  <code>001</code> OR<code>010</code></p>
+<p><code>100</code> 打开四号开关直接输出1</p>
+<p><code>101</code>  <code>001</code> NOT</p>
+<p><code>110</code>  <code>010</code> NOT</p>
+<p><code>111</code>  <code>011</code> NOT</p>
+<h2 id="计算机架构"><a href="#计算机架构" class="headerlink" title="计算机架构"></a>计算机架构</h2><p><img src="Untitled%2022.png"></p>
+<p>一个图灵完备的计算机！对6个寄存器进行多种操作</p>
+<p>蓝色导线：控制是否从该寄存器读取字节到流中（包括输入端）</p>
+<p>绿色导线：控制寄存器是否从字节流中读取并存入字节 （包括输出端）</p>
+<p>粉色导线：模拟字节流</p>
+<p>白色导线：模拟计算机的计算功能，利用ALU读取指令并进行计算</p>
+<p>紫色导线：“立即数”模式，将指令直接作为数字存入。当且仅当模式为“复制”时开启蓝色和绿色导线的输入输出功能</p>
+<p>黄色导线：给予计算机跳转程序的功能，通过向“程序集”中写入字节来控制</p>
+<h1 id="知识储备"><a href="#知识储备" class="headerlink" title="知识储备"></a>知识储备</h1><p>一点反思：</p>
+<h2 id="德摩根定律"><a href="#德摩根定律" class="headerlink" title="德摩根定律"></a>德摩根定律</h2><p><img src="Untitled%2023.png"></p>
+<h2 id="利用卡诺图来减轻不必要的计算量"><a href="#利用卡诺图来减轻不必要的计算量" class="headerlink" title="利用卡诺图来减轻不必要的计算量"></a>利用卡诺图来减轻不必要的计算量</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44378835/article/details/104707433"></a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/" data-id="clv88l3qt0005pcv3f9fpelhk" data-title="从图灵完备开始的数电学习之旅" class="article-share-link">Share</a>
+      
+      
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+  <nav id="article-nav" class="wow fadeInUp">
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        
+        
+          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="阿尼亚的内部训练赛wp" class="lazyload">
+        
+      
+      <a href="../../11/FK%20RCE/"></a>
+      <div class="article-nav-caption">Older</div>
+      <h3 class="article-nav-title">
+        
+          阿尼亚的内部训练赛wp
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+  
+</article>
+
+
+
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrap wow fadeInRight wrap-sticky">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%90%86%E8%A7%A3%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E6%80%A7"><span class="toc-number">1.</span> <span class="toc-text">理解图灵完备性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E9%80%BB%E8%BE%91%E9%97%A8"><span class="toc-number">2.</span> <span class="toc-text">基础逻辑门</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%9E%E9%97%A8-%EF%BC%88NOT%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">非门 （NOT）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8E%E9%97%A8-%EF%BC%88AND%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">与门 （AND）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%96%E9%97%A8%EF%BC%88OR%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">或门（OR）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%96%E9%9D%9E%E9%97%A8%EF%BC%88NOR%EF%BC%89"><span class="toc-number">2.4.</span> <span class="toc-text">或非门（NOR）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E6%88%96%E9%97%A8%EF%BC%88XOR%EF%BC%89"><span class="toc-number">2.5.</span> <span class="toc-text">异或门（XOR）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8C%E6%88%96%E9%97%A8-%EF%BC%88XNOR%EF%BC%89"><span class="toc-number">2.6.</span> <span class="toc-text">同或门 （XNOR）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6%E7%AE%97%E6%95%B0%E8%BF%90%E7%AE%97"><span class="toc-number">3.</span> <span class="toc-text">进阶算数运算</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%8A%E5%8A%A0%E5%99%A8"><span class="toc-number">3.1.</span> <span class="toc-text">半加器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%A8%E5%8A%A0%E5%99%A8"><span class="toc-number">3.2.</span> <span class="toc-text">全加器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E4%BD%8D%E5%BC%80%E5%85%B3"><span class="toc-number">3.3.</span> <span class="toc-text">1位开关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E4%BD%8D%E6%88%96"><span class="toc-number">3.4.</span> <span class="toc-text">八位或</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E4%BD%8D%E9%9D%9E"><span class="toc-number">3.5.</span> <span class="toc-text">八位非</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E4%BD%8D%E5%8A%A0%E6%B3%95%E5%99%A8"><span class="toc-number">3.6.</span> <span class="toc-text">八位加法器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E9%80%89%E6%8B%A9%E5%99%A8%EF%BC%9A"><span class="toc-number">3.7.</span> <span class="toc-text">数据选择器：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BD%8D%E5%82%A8%E5%AD%98"><span class="toc-number">3.8.</span> <span class="toc-text">一位储存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E5%AD%97%E8%8A%82%E5%82%A8%E5%AD%98"><span class="toc-number">3.9.</span> <span class="toc-text">一字节储存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BD%8D%E8%A7%A3%E7%A0%81%E5%99%A8"><span class="toc-number">3.10.</span> <span class="toc-text">一位解码器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E4%BD%8D%E8%A7%A3%E7%A0%81%E5%99%A8"><span class="toc-number">3.11.</span> <span class="toc-text">三位解码器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%9B%92%E5%AD%90"><span class="toc-number">3.12.</span> <span class="toc-text">小盒子</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E5%99%A8%E6%9E%B6%E6%9E%84"><span class="toc-number">4.</span> <span class="toc-text">处理器架构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E6%95%B0%E5%99%A8"><span class="toc-number">4.1.</span> <span class="toc-text">计数器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%97%E6%95%B0%E5%BC%95%E6%93%8E"><span class="toc-number">4.2.</span> <span class="toc-text">算数引擎</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD"><span class="toc-number">4.3.</span> <span class="toc-text">条件判断</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%9E%B6%E6%9E%84"><span class="toc-number">4.4.</span> <span class="toc-text">计算机架构</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9F%A5%E8%AF%86%E5%82%A8%E5%A4%87"><span class="toc-number">5.</span> <span class="toc-text">知识储备</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%B7%E6%91%A9%E6%A0%B9%E5%AE%9A%E5%BE%8B"><span class="toc-number">5.1.</span> <span class="toc-text">德摩根定律</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E5%8D%A1%E8%AF%BA%E5%9B%BE%E6%9D%A5%E5%87%8F%E8%BD%BB%E4%B8%8D%E5%BF%85%E8%A6%81%E7%9A%84%E8%AE%A1%E7%AE%97%E9%87%8F"><span class="toc-number">5.2.</span> <span class="toc-text">利用卡诺图来减轻不必要的计算量</span></a></li></ol></li></ol></div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatarrr.jpg" data-sizes="auto" alt="阿尼亚はこれが好き" class="lazyload">
+  <div class="sidebar-author-name">阿尼亚はこれが好き</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    <div class="sidebar-state-number">4</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="../../../../index.html" aria-label="Home"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">Home</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="../../../../archives" aria-label="Archives"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">Archives</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="../../../../about" aria-label="About"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">About</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="../../../../friend" aria-label="Friend"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">Friend</div>
+    </div>
+  
+</div>
+</div>
+    
+    
+      <div class="sidebar-btn-wrapper" style="position:static">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+    
+  </div>
+
+  
+</aside>
+
+          
+        </div>
+        <footer id="footer" class="wow fadeInUp">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      <div>
+        <span class="icon-copyright"></span>
+        2020-2024
+        <span class="footer-info-sep"></span>
+        阿尼亚はこれが好き
+      </div>
+      
+        <div>
+          Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>&nbsp;
+          Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" target="_blank">Reimu</a>
+        </div>
+      
+      
+        <div>
+          <span class="icon-brush"></span>
+          3.9k
+          &nbsp;|&nbsp;
+          <span class="icon-coffee"></span>
+          00:13
+        </div>
+      
+      
+        <div>
+          <span class="icon-eye"></span>
+          <span id="busuanzi_container_site_pv">Number of visits&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+          &nbsp;|&nbsp;
+          <span class="icon-user"></span>
+          <span id="busuanzi_container_site_uv">Number of visitors&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+        </div>
+      
+    </div>
+  </div>
+</footer>
+
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" />
+          <div class="arrow-up"></div>
+        </div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%90%86%E8%A7%A3%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E6%80%A7"><span class="toc-number">1.</span> <span class="toc-text">理解图灵完备性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E9%80%BB%E8%BE%91%E9%97%A8"><span class="toc-number">2.</span> <span class="toc-text">基础逻辑门</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%9E%E9%97%A8-%EF%BC%88NOT%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">非门 （NOT）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8E%E9%97%A8-%EF%BC%88AND%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">与门 （AND）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%96%E9%97%A8%EF%BC%88OR%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">或门（OR）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%96%E9%9D%9E%E9%97%A8%EF%BC%88NOR%EF%BC%89"><span class="toc-number">2.4.</span> <span class="toc-text">或非门（NOR）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E6%88%96%E9%97%A8%EF%BC%88XOR%EF%BC%89"><span class="toc-number">2.5.</span> <span class="toc-text">异或门（XOR）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8C%E6%88%96%E9%97%A8-%EF%BC%88XNOR%EF%BC%89"><span class="toc-number">2.6.</span> <span class="toc-text">同或门 （XNOR）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6%E7%AE%97%E6%95%B0%E8%BF%90%E7%AE%97"><span class="toc-number">3.</span> <span class="toc-text">进阶算数运算</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%8A%E5%8A%A0%E5%99%A8"><span class="toc-number">3.1.</span> <span class="toc-text">半加器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%A8%E5%8A%A0%E5%99%A8"><span class="toc-number">3.2.</span> <span class="toc-text">全加器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E4%BD%8D%E5%BC%80%E5%85%B3"><span class="toc-number">3.3.</span> <span class="toc-text">1位开关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E4%BD%8D%E6%88%96"><span class="toc-number">3.4.</span> <span class="toc-text">八位或</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E4%BD%8D%E9%9D%9E"><span class="toc-number">3.5.</span> <span class="toc-text">八位非</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E4%BD%8D%E5%8A%A0%E6%B3%95%E5%99%A8"><span class="toc-number">3.6.</span> <span class="toc-text">八位加法器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E9%80%89%E6%8B%A9%E5%99%A8%EF%BC%9A"><span class="toc-number">3.7.</span> <span class="toc-text">数据选择器：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BD%8D%E5%82%A8%E5%AD%98"><span class="toc-number">3.8.</span> <span class="toc-text">一位储存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E5%AD%97%E8%8A%82%E5%82%A8%E5%AD%98"><span class="toc-number">3.9.</span> <span class="toc-text">一字节储存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BD%8D%E8%A7%A3%E7%A0%81%E5%99%A8"><span class="toc-number">3.10.</span> <span class="toc-text">一位解码器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E4%BD%8D%E8%A7%A3%E7%A0%81%E5%99%A8"><span class="toc-number">3.11.</span> <span class="toc-text">三位解码器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%9B%92%E5%AD%90"><span class="toc-number">3.12.</span> <span class="toc-text">小盒子</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E5%99%A8%E6%9E%B6%E6%9E%84"><span class="toc-number">4.</span> <span class="toc-text">处理器架构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E6%95%B0%E5%99%A8"><span class="toc-number">4.1.</span> <span class="toc-text">计数器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%97%E6%95%B0%E5%BC%95%E6%93%8E"><span class="toc-number">4.2.</span> <span class="toc-text">算数引擎</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD"><span class="toc-number">4.3.</span> <span class="toc-text">条件判断</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%9E%B6%E6%9E%84"><span class="toc-number">4.4.</span> <span class="toc-text">计算机架构</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9F%A5%E8%AF%86%E5%82%A8%E5%A4%87"><span class="toc-number">5.</span> <span class="toc-text">知识储备</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%B7%E6%91%A9%E6%A0%B9%E5%AE%9A%E5%BE%8B"><span class="toc-number">5.1.</span> <span class="toc-text">德摩根定律</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E5%8D%A1%E8%AF%BA%E5%9B%BE%E6%9D%A5%E5%87%8F%E8%BD%BB%E4%B8%8D%E5%BF%85%E8%A6%81%E7%9A%84%E8%AE%A1%E7%AE%97%E9%87%8F"><span class="toc-number">5.2.</span> <span class="toc-text">利用卡诺图来减轻不必要的计算量</span></a></li></ol></li></ol></div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatarrr.jpg" data-sizes="auto" alt="阿尼亚はこれが好き" class="lazyload">
+  <div class="sidebar-author-name">阿尼亚はこれが好き</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    <div class="sidebar-state-number">4</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="../../../../index.html" aria-label="Home"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">Home</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="../../../../archives" aria-label="Archives"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">Archives</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="../../../../about" aria-label="About"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">About</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="../../../../friend" aria-label="Friend"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">Friend</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    <div class="site-search">
+      <div class="reimu-popup popup">
+        <div class="reimu-search">
+          <span class="reimu-search-input-icon"></span>
+          <div class="reimu-search-input" id="reimu-search-input"></div>
+        </div>
+        <div class="reimu-results">
+          <div id="reimu-stats"></div>
+          <div id="reimu-hits"></div>
+          <div id="reimu-pagination" class="reimu-pagination"></div>
+        </div>
+        <span class="popup-btn-close"></span>
+      </div>
+    </div>
+    
+<script src="https://npm.webcache.cn/jquery@3.7.1/dist/jquery.min.js"></script>
+
+
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+
+
+  
+<script src="https://npm.webcache.cn/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" defer></script>
+
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" async></script>
+
+
+
+
+
+
+<script src="../../../../js/pjax_script.js" data-pjax></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.4/dist/index.umd.js"></script>
+
+  <script>
+    firework(JSON.parse('{"excludeElements":["a"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+
+
+<script src="../../../../js/script.js"></script>
+
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.1.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+  <!-- hexo injector body_end start -->
+<script src="js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --></body>
+  </html>
+
