@@ -1,0 +1,638 @@
+
+  <!DOCTYPE html>
+  <html lang="en"  >
+  <head>
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  
+  <title>
+    Java安全 从0到1学习之路（一）反射 |
+    
+    (&gt;ᯅ&lt;)
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preload" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CUbuntu%20Mono:400,400italic,700,700italic&display=swap&subset=latin,latin-ext" as="style" onload="this.onload&#x3D;null;this.rel&#x3D;&#39;stylesheet&#39;">
+  
+<link rel="stylesheet" href="https://npm.webcache.cn/@fortawesome/fontawesome-free@6.5.1/css/regular.min.css">
+<link rel="stylesheet" href="https://npm.webcache.cn/@fortawesome/fontawesome-free@6.5.1/css/solid.min.css">
+
+  <link rel="preload" href="https://npm.webcache.cn/@fortawesome/fontawesome-free@6.5.1/css/brands.min.css" as="style" onload="this.onload&#x3D;null;this.rel&#x3D;&#39;stylesheet&#39;"><link rel="preload" href="https://npm.webcache.cn/@fortawesome/fontawesome-free@6.5.1/css/v5-font-face.min.css" as="style" onload="this.onload&#x3D;null;this.rel&#x3D;&#39;stylesheet&#39;"><link rel="preload" href="https://npm.webcache.cn/@fortawesome/fontawesome-free@6.5.1/css/v4-font-face.min.css" as="style" onload="this.onload&#x3D;null;this.rel&#x3D;&#39;stylesheet&#39;">
+  
+<link rel="stylesheet" href="../../../../css/loader.css">
+
+  <meta name="description" content="准备开一个新坑 国赛在即，深感自己基础知识薄弱，于是回过头来把owasp top 10的基础知识又过了一遍，结果在看的时候内部训练赛出了一道有意思的java反序列化题，当时没学过java，硬生生的靠着搜索引擎做出来了 刚好5.1放假，于是利用这个假期把java好好的学了一点点，写一些注解来帮助自己更好的掌握 本篇先从java最基础的反射调用说起 环境搭建破防了，搭了整整两个小时，心好累不写了 ja">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java安全 从0到1学习之路（一）反射">
+<meta property="og:url" content="http://example.com/2024/05/06/Java%E5%AE%89%E5%85%A8%20%E4%BB%8E0%E5%88%B01%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF%EF%BC%88%E4%B8%80%EF%BC%89%E5%8F%8D%E5%B0%84/index.html">
+<meta property="og:site_name" content="(&gt;ᯅ&lt;)">
+<meta property="og:description" content="准备开一个新坑 国赛在即，深感自己基础知识薄弱，于是回过头来把owasp top 10的基础知识又过了一遍，结果在看的时候内部训练赛出了一道有意思的java反序列化题，当时没学过java，硬生生的靠着搜索引擎做出来了 刚好5.1放假，于是利用这个假期把java好好的学了一点点，写一些注解来帮助自己更好的掌握 本篇先从java最基础的反射调用说起 环境搭建破防了，搭了整整两个小时，心好累不写了 ja">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2024/05/06/Java%E5%AE%89%E5%85%A8%20%E4%BB%8E0%E5%88%B01%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF%EF%BC%88%E4%B8%80%EF%BC%89%E5%8F%8D%E5%B0%84/Untitled.png">
+<meta property="og:image" content="http://example.com/2024/05/06/Java%E5%AE%89%E5%85%A8%20%E4%BB%8E0%E5%88%B01%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF%EF%BC%88%E4%B8%80%EF%BC%89%E5%8F%8D%E5%B0%84/Untitled%201.png">
+<meta property="og:image" content="http://example.com/2024/05/06/Java%E5%AE%89%E5%85%A8%20%E4%BB%8E0%E5%88%B01%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF%EF%BC%88%E4%B8%80%EF%BC%89%E5%8F%8D%E5%B0%84/Untitled%202.png">
+<meta property="og:image" content="http://example.com/2024/05/06/Java%E5%AE%89%E5%85%A8%20%E4%BB%8E0%E5%88%B01%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF%EF%BC%88%E4%B8%80%EF%BC%89%E5%8F%8D%E5%B0%84/Untitled%203.png">
+<meta property="og:image" content="http://example.com/2024/05/06/Java%E5%AE%89%E5%85%A8%20%E4%BB%8E0%E5%88%B01%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF%EF%BC%88%E4%B8%80%EF%BC%89%E5%8F%8D%E5%B0%84/Untitled%204.png">
+<meta property="og:image" content="http://example.com/2024/05/06/Java%E5%AE%89%E5%85%A8%20%E4%BB%8E0%E5%88%B01%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF%EF%BC%88%E4%B8%80%EF%BC%89%E5%8F%8D%E5%B0%84/Untitled%205.png">
+<meta property="og:image" content="http://example.com/2024/05/06/Java%E5%AE%89%E5%85%A8%20%E4%BB%8E0%E5%88%B01%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF%EF%BC%88%E4%B8%80%EF%BC%89%E5%8F%8D%E5%B0%84/Untitled%206.png">
+<meta property="article:published_time" content="2024-05-06T14:39:15.028Z">
+<meta property="article:modified_time" content="2024-05-06T15:00:54.522Z">
+<meta property="article:author" content="阿尼亚はこれが好き">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/05/06/Java%E5%AE%89%E5%85%A8%20%E4%BB%8E0%E5%88%B01%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF%EF%BC%88%E4%B8%80%EF%BC%89%E5%8F%8D%E5%B0%84/Untitled.png">
+  
+    <link rel="alternate" href="../../../../atom.xml" title="(>ᯅ<)" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="../../../../images/favicon.ico">
+  
+  
+  
+<link rel="stylesheet" href="../../../../css/style.css">
+
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+  
+  
+  
+  
+  
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"></script>
+
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/wowjs@1.1.3/css/libs/animate.css">
+
+    
+<script src="https://npm.webcache.cn/wowjs@1.1.3/dist/wow.min.js"></script>
+
+    <script>
+      new WOW({
+        offset: 0,
+        mobile: true,
+        live: false
+      }).init();
+    </script>
+  
+  
+    <script src="/sw.js"></script>
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+  <body>
+    
+  <div id='loader'>
+    <div class="loading-left-bg"></div>
+    <div class="loading-right-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff6e6b" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z" fill="#fd0d00" />
+          <path d="M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95" fill="#fd0d00" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    const startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    const endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('load', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="../../../../index.html">Home</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="../../../../archives">Archives</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="../../../../about">About</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <span class="main-nav-icon"></span>
+        <a class="main-nav-link" href="../../../../friend">Friend</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="../../../../atom.xml" title="RSS Feed"></a>
+    
+    
+    
+  </nav>
+</div>
+<header id="header">
+  
+    <img fetchpriority="high" src="/images/banner.jpg" alt="Java安全 从0到1学习之路（一）反射">
+  
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <div id="logo-wrap">
+        
+          
+          
+            <a href="../../../../index.html" id="logo">
+              <h1>Java安全 从0到1学习之路（一）反射</h1>
+            </a>
+          
+        
+      </div>
+      
+        
+        <h2 id="subtitle-wrap">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content" class="outer">
+          
+          <section id="main"><article id="post-Java安全 从0到1学习之路（一）反射" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    <div class="article-meta">
+      <div class="article-date wow slideInLeft">
+  <a href="" class="article-date-link">
+    <time datetime="2024-05-06T14:39:15.028Z" itemprop="datePublished">2024-05-06</time>
+  </a>
+</div>
+
+      
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>准备开一个新坑</p>
+<p>国赛在即，深感自己基础知识薄弱，于是回过头来把owasp top 10的基础知识又过了一遍，结果在看的时候内部训练赛出了一道有意思的java反序列化题，当时没学过java，硬生生的<del>靠着搜索引擎做出来了</del></p>
+<p>刚好5.1放假，于是利用这个假期把java好好的学了一点点，写一些注解来帮助自己更好的掌握</p>
+<p>本篇先从java最基础的反射调用说起</p>
+<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>破防了，搭了整整两个小时，心好累不写了</p>
+<h1 id="java反射-Reflection"><a href="#java反射-Reflection" class="headerlink" title="java反射 (Reflection)"></a>java反射 (Reflection)</h1><p>Java反射机制是在运行状态时，对于任意一个类，都能够获取到这个类的<strong>所有</strong>属性和方法，对于任意一个对象，都能够调用它的<strong>任意</strong>一个方法和属性(包括私有的方法和属性)，这种动态获取的信息以及动态调用对象的方法的功能就称为java语言的反射机制。</p>
+<p>为什么这个值得单独提出来说呢，因为java是一种静态的语言，本身是不能随意修改属性的，这和php（输入什么就是什么）形成了鲜明的对比。</p>
+<p>变量在声明时必须指定类型，且一旦创建，对象的类型不能改变</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Object</span> <span class="variable">object</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Object</span>();</span><br></pre></td></tr></table></figure>
+
+<p>人尽可夫的php，传入什么就执行什么</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">eval</span>(<span class="meta">&lt;?php</span> <span class="keyword">echo</span> <span class="number">1</span><span class="meta">?&gt;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="反射的原理"><a href="#反射的原理" class="headerlink" title="反射的原理"></a>反射的原理</h2><p>先来看一个正射的例子</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Student student = <span class="keyword">new</span> <span class="title class_">Student</span>();</span><br><span class="line">student.<span class="title function_ invoke__">doHomework</span>(<span class="string">&quot;数学&quot;</span>);<span class="comment">//正射</span></span><br></pre></td></tr></table></figure>
+
+<p>与 ”正射“ 直接操作实例化的对象不同，”反射“通过<strong>操作类的原型来改变属性的值</strong>，像是神奇的扎小人，通过操作小人来让你感受钻心刻骨的疼痛。</p>
+<p>对于一个java的程序来说，我们程序在运行的时候会编译生成一个 <code>.class</code> 文件，这个 <code>.class</code> 文件就是程序的”小人“，里面的内容就是相对应的类的所有信息。</p>
+<p><strong>每个类都有一个Class对象</strong>，每当编译一个新类就产生一个Class对象（比如创建一个Student类，那么，JVM就会创建一个Student对应Class类的Class对象，该Class对象保存了Student类相关的类型信息）</p>
+<p>例如（后面解释）：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Person person = <span class="keyword">new</span> <span class="title class_">Person</span>();  </span><br><span class="line">Class c = person.<span class="title function_ invoke__">getClass</span>();</span><br></pre></td></tr></table></figure>
+
+<p>Class 类的对象作用是<strong>运行时提供或获得某个对象的类型信息</strong>。</p>
+<p>所以反射其实就是操作 Class <strong>(注意是大写Class)</strong></p>
+<h2 id="实操"><a href="#实操" class="headerlink" title="实操"></a>实操</h2><p>获取类</p>
+<p>先新建一个java类方便后续反射操作</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">shop</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String food;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> man;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_ invoke__">shop</span>()&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 构造函数</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_ invoke__">shop</span>(String food, <span class="keyword">int</span> man)&#123;</span><br><span class="line">        this.food = food;</span><br><span class="line">        this.man = man;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_ invoke__">action</span>(String act) &#123;</span><br><span class="line">        System.out.<span class="title function_ invoke__">println</span>(act);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_ invoke__">toString</span>()&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;shop&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;food=&#x27;&quot;</span> + food + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, man=&quot;</span> + man +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里定义了一个公有属性<code>food</code>，私有属性<code>man</code>，还有一些方法，我们来看看怎么反射操作：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">shop shopper = <span class="keyword">new</span> <span class="title function_ invoke__">shop</span>(<span class="string">&quot;bread&quot;</span>,<span class="number">1</span>);</span><br><span class="line">Class c = shopper.<span class="title function_ invoke__">getClass</span>();</span><br></pre></td></tr></table></figure>
+
+<p>这里先实例化了一个<code>shop</code>类名为<code>shopper</code>，通过自带的<code>getclass</code>方法来获取它的类，存在c中；</p>
+<p>后续只需对c进行操作即可</p>
+<p>同时，获取类还有几个方法</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Class class1 = Class.<span class="title function_ invoke__">forName</span>(<span class="string">&quot;reflection.TestReflection&quot;</span>);</span><br><span class="line"><span class="keyword">or</span></span><br><span class="line">Class class2 = TestReflection.<span class="keyword">class</span>;</span><br></pre></td></tr></table></figure>
+
+<p>利用<code>.forName</code> 方法直接检索类名字获取这个类，或者直接获取这个类的类</p>
+<p>可以写个代码来看看他们三个的功能</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">reflectionTest</span> </span>&#123;  </span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">static</span> <span class="keyword">void</span> <span class="title function_ invoke__">main</span>(String[] args) throws <span class="built_in">Exception</span>&#123;  </span><br><span class="line">       </span><br><span class="line">       <span class="comment">// 类的 .class 属性  </span></span><br><span class="line">			 Class c1 = shop.<span class="keyword">class</span>;  </span><br><span class="line">			 System.out.<span class="title function_ invoke__">println</span>(c1.<span class="title function_ invoke__">getName</span>());  </span><br><span class="line">			  </span><br><span class="line">			 <span class="comment">// 实例化对象的 getClass() 方法  </span></span><br><span class="line">			 shop shop = <span class="keyword">new</span> <span class="title function_ invoke__">shop</span>();  </span><br><span class="line">			 Class c2 = shop.<span class="title function_ invoke__">getClass</span>();  </span><br><span class="line">			 System.out.<span class="title function_ invoke__">println</span>(c2.<span class="title function_ invoke__">getName</span>());  </span><br><span class="line">			  </span><br><span class="line">			 <span class="comment">// Class.forName(String className): 动态加载类  </span></span><br><span class="line">			 Class c3 = Class.<span class="title function_ invoke__">forName</span>(<span class="string">&quot;shop&quot;</span>);  </span><br><span class="line">			 System.out.<span class="title function_ invoke__">println</span>(c3.<span class="title function_ invoke__">getName</span>());  </span><br><span class="line">  </span><br><span class="line"> &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="Untitled.png"></p>
+<p>效果基本是一样的</p>
+<h2 id="获取成员属性、方法、构造函数"><a href="#获取成员属性、方法、构造函数" class="headerlink" title="获取成员属性、方法、构造函数"></a>获取成员属性、方法、构造函数</h2><p>这里就放在一起说了，过程基本上差不多</p>
+<h3 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Field[] <span class="title function_ invoke__">getFields</span>() ：获取所有成员属性(只能获得<span class="keyword">public</span></span><br><span class="line"></span><br><span class="line">Field[] <span class="title function_ invoke__">getDeclaredFields</span>() 获取所有的成员属性(包括<span class="keyword">private</span>等等</span><br><span class="line"></span><br><span class="line">Field  <span class="title function_ invoke__">getField</span>(String name) 获取指定名称的 <span class="keyword">public</span> 的成员属性</span><br><span class="line"></span><br><span class="line">Field  <span class="title function_ invoke__">getDeclaredField</span>(String name) 获取指定的任意成员属性</span><br></pre></td></tr></table></figure>
+
+<p>写个代码来深化一下理解</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.reflect.Constructor;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">reflectionTest</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line"></span><br><span class="line">        <span class="type">shop</span> <span class="variable">shopper</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">shop</span>(<span class="string">&quot;bread&quot;</span>,<span class="number">1</span>);</span><br><span class="line">        <span class="type">Class</span> <span class="variable">c</span> <span class="operator">=</span> shopper.getClass();</span><br></pre></td></tr></table></figure>
+
+<p>初始化</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取所有成员属性(只能获得public</span></span><br><span class="line">  Field[] shopfield  = c.<span class="title function_ invoke__">getFields</span>();</span><br><span class="line">  <span class="keyword">for</span>(Field f : shopfield)&#123;</span><br><span class="line">      System.out.<span class="title function_ invoke__">println</span>(f);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="Untitled%201.png"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取所有的成员属性(包括private等等</span></span><br><span class="line">Field[] shoppfield  = c.getDeclaredFields();</span><br><span class="line"><span class="keyword">for</span>(Field f : shoppfield)&#123;</span><br><span class="line">    System.out.println(f);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="Untitled%202.png"></p>
+<p>可以看到加了<code>Declared</code>之后可以获取到本来<code>private</code>的<code>man</code>了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取指定名称的 public 的成员属性</span></span><br><span class="line">  System.out.println(shopper);</span><br><span class="line">  <span class="type">Field</span> <span class="variable">foodfield</span> <span class="operator">=</span> c.getField(<span class="string">&quot;food&quot;</span>);</span><br><span class="line">  foodfield.set(shopper,<span class="string">&quot;baozi&quot;</span>);</span><br><span class="line">  System.out.println(shopper);</span><br></pre></td></tr></table></figure>
+
+<p>这里我引入了一个<code>.set</code> 方法，这个方法可以修改<code>foodfield</code>的值，第一个传入的属性是一个这个类的实例，第二个是你期望修改的值，这个基本上就是最简单的一个反射了！！</p>
+<p><img src="Untitled%203.png"></p>
+<p>可以看到，我们成功修改了shopper对象的<code>food</code>值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取指定的任意成员属性</span></span><br><span class="line"><span class="type">Field</span> <span class="variable">manfield</span> <span class="operator">=</span> c.getDeclaredField(<span class="string">&quot;man&quot;</span>);</span><br><span class="line">manfield.setAccessible(<span class="literal">true</span>);</span><br><span class="line">System.out.println(shopper);</span><br><span class="line">manfield.set(shopper,<span class="number">11111</span>);</span><br><span class="line">System.out.println(shopper);</span><br></pre></td></tr></table></figure>
+
+<p>这里我们期望修改<code>man</code>的值，但由于他是<code>private</code>，所以需要再引入一个新方法<code>.setAccessible</code> ，这个方法可以让原本无法访问的属性变得可访问，意如其名。</p>
+<p><img src="Untitled%204.png"></p>
+<p>可以看到已经成功修改了</p>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">//调用类的方法</span></span><br><span class="line">Method[] shopmethod  = c.getMethods();</span><br><span class="line"><span class="keyword">for</span>(Method m : shopmethod)&#123;</span><br><span class="line">    System.out.println(m);</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(<span class="string">&quot;--------------------------------------------------------&quot;</span>);</span><br><span class="line"><span class="comment">//指定方法</span></span><br><span class="line"><span class="type">Method</span> <span class="variable">actionmethod</span> <span class="operator">=</span> c.getMethod(<span class="string">&quot;action&quot;</span>,String.class);</span><br><span class="line">actionmethod.invoke(shopper,<span class="string">&quot;cnmnmnmnm&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>和属性的内容基本相同，只是filed改成了method，同时注意使用有参<code>.getMethod</code> 时需要指定参数类型</p>
+<p><img src="Untitled%205.png"></p>
+<p>方法一打印出了许多原本自带的方法，当我们指定了<code>action</code> 时（shop里的一个方法），他就打印出了我们指定的字符串</p>
+<h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.reflect.Constructor;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">reflectionTest</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line"></span><br><span class="line">        <span class="type">shop</span> <span class="variable">shopper</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">shop</span>(<span class="string">&quot;bread&quot;</span>,<span class="number">1</span>);</span><br><span class="line">        <span class="type">Class</span> <span class="variable">c</span> <span class="operator">=</span> shopper.getClass();</span><br><span class="line">        <span class="comment">//反射就是操作CLass</span></span><br><span class="line">        <span class="comment">//实例化对象</span></span><br><span class="line">        <span class="type">Constructor</span> <span class="variable">shopconstructor</span> <span class="operator">=</span> c.getConstructor(String.class, <span class="type">int</span>.class);</span><br><span class="line">        <span class="type">shop</span> <span class="variable">s</span> <span class="operator">=</span> (shop) shopconstructor.newInstance(<span class="string">&quot;mantou&quot;</span>, <span class="number">0</span>);</span><br><span class="line">        System.out.println(shopper);</span><br><span class="line">        System.out.println(s); </span><br></pre></td></tr></table></figure>
+
+<p>我们可以使用<code>.newInstance()</code> 利用<code>class</code>来创建一个新的对象，类似于女娲造人，用泥土捏一个新的人。</p>
+<p>无参构造可以无脑<code>c.newInstance()</code></p>
+<p>有参构造的化，首先使用<code>.getConstructor</code> 来创建一个构造器同时指定参数类型，接着实例化就行了</p>
+<p><img src="Untitled%206.png"></p>
+<p>我们成功利用反射构造出了一个新的对象</p>
+<h3 id="单独说一下invoke"><a href="#单独说一下invoke" class="headerlink" title="单独说一下invoke"></a>单独说一下invoke</h3><p>在Java中，<code>java.lang.reflect.Method.invoke()</code> 方法可以用于动态地调用任何对象的任何方法，包括非同名方法。以下是一个基本的例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Test</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">hello</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Hello, world!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">Test</span> <span class="variable">test</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Test</span>();</span><br><span class="line"></span><br><span class="line">        <span class="type">Method</span> <span class="variable">method</span> <span class="operator">=</span> Test.class.getDeclaredMethod(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line">        method.invoke(test);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，我们首先创建了一个 <code>Test</code> 类的对象 <code>test</code>。然后，我们使用 <code>Test.class.getDeclaredMethod(&quot;hello&quot;)</code> 来获取 <code>Test</code> 类的 <code>hello</code> 方法的 <code>Method</code> 对象。最后，我们使用 <code>method.invoke(test)</code> 来调用 <code>test</code> 对象的 <code>hello</code> 方法。</p>
+<p>反射的内容基本上就这些了，其实学下来也就多几个函数调用，但是这是我们入门java安全的基石</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>反射的作用：</p>
+<p><strong>让java具有动态性</strong><br>修改已有对象的属性<br>动态生成对象<br>动态调用方法<br>操作内部类和私有方法<br><strong>在反序列化漏洞中的应用：</strong><br>定制需要的对象<br>通过invoke调用除了同名函数以外的函数<br>通过Class类创建对象，引入不能序列化的类</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/05/06/Java%E5%AE%89%E5%85%A8%20%E4%BB%8E0%E5%88%B01%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF%EF%BC%88%E4%B8%80%EF%BC%89%E5%8F%8D%E5%B0%84/" data-id="clvv3ur5l00054kv3cee89t7i" data-title="Java安全 从0到1学习之路（一）反射" class="article-share-link">Share</a>
+      
+      
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+  <nav id="article-nav" class="wow fadeInUp">
+    
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          
+          
+            <img data-src="/covers/OI856756P-C (1).jpg" data-sizes="auto" alt="Java (二）序列化与反序列化" class="lazyload">
+          
+        
+        <a href="../Java%20(%E4%BA%8C%EF%BC%89%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/"></a>
+        <div class="article-nav-caption">Newer</div>
+        <h3 class="article-nav-title">
+          
+            Java (二）序列化与反序列化
+          
+        </h3>
+      </div>
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        
+        
+          <img data-src="/covers/OI23455P-C (1).jpg" data-sizes="auto" alt="从图灵完备开始的数电学习之旅" class="lazyload">
+        
+      
+      <a href="../../../04/20/%E4%BB%8E%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87%E5%BC%80%E5%A7%8B%E7%9A%84%E6%95%B0%E7%94%B5%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/"></a>
+      <div class="article-nav-caption">Older</div>
+      <h3 class="article-nav-title">
+        
+          从图灵完备开始的数电学习之旅
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+  
+</article>
+
+
+
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrap wow fadeInRight wrap-sticky">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">1.</span> <span class="toc-text">环境搭建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#java%E5%8F%8D%E5%B0%84-Reflection"><span class="toc-number">2.</span> <span class="toc-text">java反射 (Reflection)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-number">2.1.</span> <span class="toc-text">反射的原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E6%93%8D"><span class="toc-number">2.2.</span> <span class="toc-text">实操</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%88%90%E5%91%98%E5%B1%9E%E6%80%A7%E3%80%81%E6%96%B9%E6%B3%95%E3%80%81%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-number">2.3.</span> <span class="toc-text">获取成员属性、方法、构造函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%9E%E6%80%A7"><span class="toc-number">2.3.1.</span> <span class="toc-text">属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%95"><span class="toc-number">2.3.2.</span> <span class="toc-text">方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-number">2.3.3.</span> <span class="toc-text">构造函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E7%8B%AC%E8%AF%B4%E4%B8%80%E4%B8%8Binvoke"><span class="toc-number">2.3.4.</span> <span class="toc-text">单独说一下invoke</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol></div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatarrr.jpg" data-sizes="auto" alt="阿尼亚はこれが好き" class="lazyload">
+  <div class="sidebar-author-name">阿尼亚はこれが好き</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    <div class="sidebar-state-number">6</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="../../../../index.html" aria-label="Home"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">Home</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="../../../../archives" aria-label="Archives"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">Archives</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="../../../../about" aria-label="About"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">About</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="../../../../friend" aria-label="Friend"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">Friend</div>
+    </div>
+  
+</div>
+</div>
+    
+    
+      <div class="sidebar-btn-wrapper" style="position:static">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+    
+  </div>
+
+  
+</aside>
+
+          
+        </div>
+        <footer id="footer" class="wow fadeInUp">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      <div>
+        <span class="icon-copyright"></span>
+        2020-2024
+        <span class="footer-info-sep"></span>
+        阿尼亚はこれが好き
+      </div>
+      
+        <div>
+          Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>&nbsp;
+          Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" target="_blank">Reimu</a>
+        </div>
+      
+      
+        <div>
+          <span class="icon-brush"></span>
+          7.3k
+          &nbsp;|&nbsp;
+          <span class="icon-coffee"></span>
+          00:26
+        </div>
+      
+      
+        <div>
+          <span class="icon-eye"></span>
+          <span id="busuanzi_container_site_pv">Number of visits&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+          &nbsp;|&nbsp;
+          <span class="icon-user"></span>
+          <span id="busuanzi_container_site_uv">Number of visitors&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+        </div>
+      
+    </div>
+  </div>
+</footer>
+
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" />
+          <div class="arrow-up"></div>
+        </div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">1.</span> <span class="toc-text">环境搭建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#java%E5%8F%8D%E5%B0%84-Reflection"><span class="toc-number">2.</span> <span class="toc-text">java反射 (Reflection)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-number">2.1.</span> <span class="toc-text">反射的原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E6%93%8D"><span class="toc-number">2.2.</span> <span class="toc-text">实操</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%88%90%E5%91%98%E5%B1%9E%E6%80%A7%E3%80%81%E6%96%B9%E6%B3%95%E3%80%81%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-number">2.3.</span> <span class="toc-text">获取成员属性、方法、构造函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%9E%E6%80%A7"><span class="toc-number">2.3.1.</span> <span class="toc-text">属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%95"><span class="toc-number">2.3.2.</span> <span class="toc-text">方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-number">2.3.3.</span> <span class="toc-text">构造函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E7%8B%AC%E8%AF%B4%E4%B8%80%E4%B8%8Binvoke"><span class="toc-number">2.3.4.</span> <span class="toc-text">单独说一下invoke</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol></div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatarrr.jpg" data-sizes="auto" alt="阿尼亚はこれが好き" class="lazyload">
+  <div class="sidebar-author-name">阿尼亚はこれが好き</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    <div class="sidebar-state-number">6</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="../../../../index.html" aria-label="Home"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">Home</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="../../../../archives" aria-label="Archives"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">Archives</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="../../../../about" aria-label="About"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">About</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="../../../../friend" aria-label="Friend"></a>
+      <span class="sidebar-menu-icon"></span>
+      <div class="sidebar-menu-link">Friend</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    <div class="site-search">
+      <div class="reimu-popup popup">
+        <div class="reimu-search">
+          <span class="reimu-search-input-icon"></span>
+          <div class="reimu-search-input" id="reimu-search-input"></div>
+        </div>
+        <div class="reimu-results">
+          <div id="reimu-stats"></div>
+          <div id="reimu-hits"></div>
+          <div id="reimu-pagination" class="reimu-pagination"></div>
+        </div>
+        <span class="popup-btn-close"></span>
+      </div>
+    </div>
+    
+<script src="https://npm.webcache.cn/jquery@3.7.1/dist/jquery.min.js"></script>
+
+
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+
+
+  
+<script src="https://npm.webcache.cn/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" defer></script>
+
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" async></script>
+
+
+
+
+
+
+<script src="../../../../js/pjax_script.js" data-pjax></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.4/dist/index.umd.js"></script>
+
+  <script>
+    firework(JSON.parse('{"excludeElements":["a"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+
+
+<script src="../../../../js/script.js"></script>
+
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.1.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+  <!-- hexo injector body_end start -->
+<script src="js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --></body>
+  </html>
+
